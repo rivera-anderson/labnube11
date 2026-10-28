@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AWS Contacts App - Arquitectura Gossu Serverless (DynamoDB + Lambda + HTTP API Gateway)
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 256
+    Runtime: python3.12
+    Architectures:
+      - arm64 # Mas rapido y 20% mas economico
+
+Resources:
+  # 1. Base de Datos DynamoDB (On-Demand / Pago por uso = $0 mientras no haya trafico)
+  ContactsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ContactosAppTable
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  # 2. HTTP API Gateway (v2 - Ultra rapido y barato)
+  ContactsApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "*"
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+          - X-Api-Key
+        AllowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - OPTIONS
+
+  # 3. Backend Lambda Function con permisos directos a DynamoDB
+  ContactsCrudFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../backend/
+      Handler: lambda_function.lambda_handler
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref ContactsTable
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ContactsTable
+      Events:
+        GetContacts:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ContactsApi
+            Path: /contacts
+            Method: GET
+        GetContactById:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ContactsApi
+            Path: /contacts/{id}
+            Method: GET
+        CreateContact:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ContactsApi
+            Path: /contacts
+            Method: POST
+        UpdateContact:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ContactsApi
+            Path: /contacts/{id}
+            Method: PUT
+        DeleteContact:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref ContactsApi
+            Path: /contacts/{id}
+            Method: DELETE
+
+Outputs:
+  ApiEndpoint:
+    Description: "URL base de tu API para ponerla en el frontend"
+    Value: !Sub "https://${ContactsApi}.execute-api.${AWS::Region}.amazonaws.com"
+  DynamoTableName:
+    Description: "Nombre de la tabla DynamoDB creada"
+    Value: !Ref ContactsTable

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Contacts | Cloud Edition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glass {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.25s ease;
+    }
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.2);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-brand-500 selection:text-white">
+
+  <!-- Ambient Glow Background -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header & Status Bar -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-slate-800">
+      <div>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-violet-500 flex items-center justify-center shadow-lg shadow-brand-500/30">
+            <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+              Nexus Contacts
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-400 font-medium">Serverless Architecture on AWS (Lambda + DynamoDB)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls & Status Badge -->
+      <div class="flex items-center gap-3 flex-wrap">
+        <!-- Backend Status Pill -->
+        <button onclick="openConfigModal()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold glass border border-slate-700/60 hover:border-slate-500 transition">
+          <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="statusLabel" class="text-slate-300">Modo Demo Local</span>
+          <i data-lucide="settings" class="w-3.5 h-3.5 text-slate-400 ml-1"></i>
+        </button>
+
+        <!-- New Contact Button -->
+        <button onclick="openModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 transition-all active:scale-95">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span>Nuevo Contacto</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6">
+      <div class="glass p-4 rounded-2xl">
+        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Contactos</span>
+        <div id="statTotal" class="text-2xl font-bold mt-1 text-white">0</div>
+      </div>
+      <div class="glass p-4 rounded-2xl">
+        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Favoritos</span>
+        <div id="statFavorites" class="text-2xl font-bold mt-1 text-amber-400">0</div>
+      </div>
+      <div class="glass p-4 rounded-2xl">
+        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Empresas</span>
+        <div id="statCompanies" class="text-2xl font-bold mt-1 text-indigo-400">0</div>
+      </div>
+      <div class="glass p-4 rounded-2xl">
+        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Latencia AWS</span>
+        <div id="statLatency" class="text-2xl font-bold mt-1 text-emerald-400">~15ms</div>
+      </div>
+    </div>
+
+    <!-- Filters & Search Toolbar -->
+    <div class="glass p-3 rounded-2xl mb-8 flex flex-col md:flex-row items-center gap-3">
+      <!-- Search Input -->
+      <div class="relative w-full md:flex-1">
+        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <input 
+          id="searchInput" 
+          type="text" 
+          placeholder="Buscar por nombre, correo, teléfono o empresa..." 
+          oninput="handleSearch()"
+          class="w-full pl-10 pr-4 py-2 bg-slate-900/60 border border-slate-700/60 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-slate-200 placeholder-slate-500 transition"
+        >
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none" id="categoryFilters">
+        <button onclick="setCategoryFilter('TODOS')" class="category-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white transition">Todos</button>
+        <button onclick="setCategoryFilter('TRABAJO')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">Trabajo</button>
+        <button onclick="setCategoryFilter('FAMILIA')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">Familia</button>
+        <button onclick="setCategoryFilter('AMIGOS')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">Amigos</button>
+        <button onclick="setCategoryFilter('VIP')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">VIP</button>
+      </div>
+    </div>
+
+    <!-- Contacts Grid -->
+    <div id="contactsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <!-- Cards renderizadas dinámicamente -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-20">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-800/80 flex items-center justify-center text-slate-400">
+        <i data-lucide="contact" class="w-8 h-8"></i>
+      </div>
+      <h3 class="text-lg font-semibold text-white">No se encontraron contactos</h3>
+      <p class="text-sm text-slate-400 mt-1 max-w-sm mx-auto">Prueba cambiando los filtros o crea tu primer contacto en la nube.</p>
+    </div>
+
+  </div>
+
+  <!-- MODAL: Crear / Editar Contacto -->
+  <div id="contactModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div class="glass w-full max-w-lg rounded-2xl border border-slate-700/80 p-6 shadow-2xl relative">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
+        <h3 id="modalTitle" class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="user-check" class="w-5 h-5 text-brand-400"></i>
+          Nuevo Contacto
+        </h3>
+        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="contactForm" onsubmit="saveContact(event)" class="space-y-4">
+        <input type="hidden" id="contactId">
+
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Nombre Completo *</label>
+          <input id="inputName" type="text" required placeholder="Ej: Anderson Silva" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Teléfono Móvil *</label>
+            <input id="inputPhone" type="tel" required placeholder="+51 987 654 321" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Email</label>
+            <input id="inputEmail" type="email" placeholder="anderson@example.com" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Empresa / Rol</label>
+            <input id="inputCompany" type="text" placeholder="Tech Lead @ Google" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Categoría</label>
+            <select id="inputCategory" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+              <option value="Trabajo">Trabajo</option>
+              <option value="Familia">Familia</option>
+              <option value="Amigos">Amigos</option>
+              <option value="VIP">VIP</option>
+              <option value="Personal">Personal</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Notas rápidas</label>
+          <textarea id="inputNotes" rows="2" placeholder="Detalles o anotaciones..." class="w-full px-3.5 py-2 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white resize-none"></textarea>
+        </div>
+
+        <div class="flex items-center gap-2 pt-1">
+          <input id="inputFavorite" type="checkbox" class="w-4 h-4 rounded border-slate-700 bg-slate-900 text-brand-600 focus:ring-0">
+          <label for="inputFavorite" class="text-sm font-medium text-slate-300">Marcar como contacto favorito</label>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white transition">Cancelar</button>
+          <button type="submit" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold shadow-lg shadow-brand-600/30 transition">Guardar Contacto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Configuración de AWS API Gateway -->
+  <div id="configModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div class="glass w-full max-w-md rounded-2xl border border-slate-700 p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i data-lucide="cloud" class="w-5 h-5 text-indigo-400"></i>
+          Conexión AWS Cloud
+        </h3>
+        <button onclick="closeConfigModal()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+        Pega la URL de tu <strong>Amazon API Gateway</strong> para sincronizar directamente con tu Lambda y DynamoDB en AWS. Si está vacía, se usa el modo demo local.
+      </p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">URL Base de API Gateway</label>
+          <input id="apiUrlInput" type="url" placeholder="https://abc123xyz.execute-api.us-east-1.amazonaws.com" class="w-full px-3.5 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl text-xs focus:outline-none focus:border-brand-500 text-slate-200">
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button onclick="resetToLocalDemo()" type="button" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-400 hover:bg-amber-400/10 transition">Usar Modo Demo</button>
+          <button onclick="saveApiUrl()" type="button" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow transition">Guardar y Conectar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
+
+  <!-- APP JAVASCRIPT LOGIC -->
+  <script>
+    // ESTADO DE LA APP
+    let contacts = [];
+    let activeCategory = 'TODOS';
+    let searchQuery = '';
+    let apiUrl = localStorage.getItem('AWS_CONTACTS_API_URL');
+    if (apiUrl === null && window.location.protocol.startsWith('http') && window.location.port !== '5173') {
+      apiUrl = window.location.origin + '/api';
+    } else if (!apiUrl) {
+      apiUrl = '';
+    }
+
+    // DATOS DE PRUEBA GOSSU
+    const INITIAL_DEMO = [
+      {
+        id: '1',
+        nombre: 'Valeria Rivas',
+        telefono: '+51 981 234 567',
+        email: 'valeria.rivas@fintech.pe',
+        empresa: 'Chief Architect @ NuScale',
+        categoria: 'VIP',
+        favorito: true,
+        avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+        notas: 'Contacto clave para arquitectura Cloud AWS'
+      },
+      {
+        id: '2',
+        nombre: 'Carlos Mendoza',
+        telefono: '+52 55 4321 9876',
+        email: 'carlos.m@devops.mx',
+        empresa: 'Lead SRE @ MercadoLibre',
+        categoria: 'Trabajo',
+        favorito: true,
+        avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+        notas: 'Especialista en Kubernetes y Terraform'
+      },
+      {
+        id: '3',
+        nombre: 'Andrea Castillo',
+        telefono: '+56 9 8765 4321',
+        email: 'andrea.design@studio.cl',
+        empresa: 'Product Designer',
+        categoria: 'Amigos',
+        favorito: false,
+        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+        notas: 'Diseñó los mocks de la app móvil'
+      }
+    ];
+
+    // INICIALIZACIÓN
+    window.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      updateBackendStatusBadge();
+      loadContacts();
+    });
+
+    function updateBackendStatusBadge() {
+      const dot = document.getElementById('statusDot');
+      const label = document.getElementById('statusLabel');
+      const input = document.getElementById('apiUrlInput');
+      input.value = apiUrl;
+
+      if (apiUrl) {
+        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400";
+        label.textContent = "Conectado a AWS";
+        label.className = "text-emerald-300 font-semibold";
+      } else {
+        dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
+        label.textContent = "Modo Demo Local";
+        label.className = "text-amber-300 font-semibold";
+      }
+    }
+
+    // CARGA DE CONTACTOS (AWS O LOCALSTORAGE)
+    async function loadContacts() {
+      const startTime = performance.now();
+      if (apiUrl) {
+        try {
+          const res = await fetch(`${apiUrl}/contacts${searchQuery ? `?q=${encodeURIComponent(searchQuery)}` : ''}`);
+          const data = await res.json();
+          contacts = data.contacts || [];
+          const latency = Math.round(performance.now() - startTime);
+          document.getElementById('statLatency').textContent = `${latency}ms`;
+        } catch (err) {
+          console.error(err);
+          showToast('Error conectando a AWS API Gateway. Usando cache local.', 'error');
+          loadFromLocal();
+        }
+      } else {
+        loadFromLocal();
+        document.getElementById('statLatency').textContent = 'Local';
+      }
+      renderContacts();
+      updateStats();
+    }
+
+    function loadFromLocal() {
+      const saved = localStorage.getItem('DEMO_CONTACTS');
+      contacts = saved ? JSON.parse(saved) : INITIAL_DEMO;
+    }
+
+    function saveToLocal() {
+      localStorage.setItem('DEMO_CONTACTS', JSON.stringify(contacts));
+    }
+
+    // GUARDAR O ACTUALIZAR
+    async function saveContact(e) {
+      e.preventDefault();
+      const id = document.getElementById('contactId').value;
+      const payload = {
+        nombre: document.getElementById('inputName').value.trim(),
+        telefono: document.getElementById('inputPhone').value.trim(),
+        email: document.getElementById('inputEmail').value.trim(),
+        empresa: document.getElementById('inputCompany').value.trim(),
+        categoria: document.getElementById('inputCategory').value,
+        notas: document.getElementById('inputNotes').value.trim(),
+        favorito: document.getElementById('inputFavorite').checked,
+        avatar_url: id ? undefined : `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(document.getElementById('inputName').value)}`
+      };
+
+      if (apiUrl) {
+        try {
+          if (id) {
+            await fetch(`${apiUrl}/contacts/${id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            showToast('Contacto actualizado en AWS DynamoDB ✨', 'success');
+          } else {
+            await fetch(`${apiUrl}/contacts`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            showToast('Contacto creado en AWS DynamoDB 🚀', 'success');
+          }
+        } catch (err) {
+          showToast('Error en la llamada a AWS', 'error');
+          return;
+        }
+      } else {
+        // Guardado local
+        if (id) {
+          const idx = contacts.findIndex(c => c.id === id);
+          if (idx !== -1) {
+            contacts[idx] = { ...contacts[idx], ...payload };
+            showToast('Contacto actualizado localmente', 'success');
+          }
+        } else {
+          payload.id = Date.now().toString();
+          contacts.unshift(payload);
+          showToast('Contacto guardado localmente', 'success');
+        }
+        saveToLocal();
+      }
+
+      closeModal();
+      loadContacts();
+    }
+
+    // ELIMINAR CONTACTO
+    async function deleteContact(id) {
+      if (!confirm('¿Estás seguro de eliminar este contacto?')) return;
+
+      if (apiUrl) {
+        try {
+          await fetch(`${apiUrl}/contacts/${id}`, { method: 'DELETE' });
+          showToast('Contacto eliminado de DynamoDB', 'info');
+        } catch (err) {
+          showToast('Error eliminando en AWS', 'error');
+          return;
+        }
+      } else {
+        contacts = contacts.filter(c => c.id !== id);
+        saveToLocal();
+        showToast('Contacto eliminado', 'info');
+      }
+
+      loadContacts();
+    }
+
+    // TOGGLE FAVORITO
+    async function toggleFavorite(id) {
+      const contact = contacts.find(c => c.id === id);
+      if (!contact) return;
+      contact.favorito = !contact.favorito;
+
+      if (apiUrl) {
+        await fetch(`${apiUrl}/contacts/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ favorito: contact.favorito })
+        });
+      } else {
+        saveToLocal();
+      }
+      renderContacts();
+      updateStats();
+    }
+
+    // FILTRADO Y BÚSQUEDA
+    function handleSearch() {
+      searchQuery = document.getElementById('searchInput').value.toLowerCase();
+      renderContacts();
+    }
+
+    function setCategoryFilter(category) {
+      activeCategory = category;
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        if (btn.textContent.trim().toUpperCase() === category) {
+          btn.className = "category-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white transition";
+        } else {
+          btn.className = "category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition";
+        }
+      });
+      renderContacts();
+    }
+
+    // RENDERIZADO VISUAL
+    function renderContacts() {
+      const grid = document.getElementById('contactsGrid');
+      const emptyState = document.getElementById('emptyState');
+
+      let filtered = contacts.filter(c => {
+        const matchesCategory = (activeCategory === 'TODOS') || (c.categoria && c.categoria.toUpperCase() === activeCategory);
+        const matchesSearch = !searchQuery || 
+          (c.nombre && c.nombre.toLowerCase().includes(searchQuery)) ||
+          (c.email && c.email.toLowerCase().includes(searchQuery)) ||
+          (c.telefono && c.telefono.includes(searchQuery)) ||
+          (c.empresa && c.empresa.toLowerCase().includes(searchQuery));
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+
+      grid.innerHTML = filtered.map(c => {
+        const categoryColor = getCategoryBadge(c.categoria);
+        return `
+          <div class="glass-card rounded-2xl p-5 flex flex-col justify-between relative group">
+            <!-- Top Card Actions -->
+            <div class="flex items-start justify-between gap-3 mb-4">
+              <div class="flex items-center gap-3">
+                <img src="${c.avatar_url || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + c.id}" 
+                     alt="${c.nombre}" 
+                     class="w-13 h-13 rounded-2xl bg-slate-800 object-cover ring-2 ring-slate-700/50 shadow-md">
+                <div>
+                  <h4 class="font-bold text-white text-base leading-tight group-hover:text-brand-400 transition">${c.nombre}</h4>
+                  <p class="text-xs text-slate-400 font-medium mt-0.5">${c.empresa || 'Sin empresa'}</p>
+                </div>
+              </div>
+
+              <!-- Botón Favorito -->
+              <button onclick="toggleFavorite('${c.id}')" class="p-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-amber-400 transition">
+                <i data-lucide="star" class="w-4 h-4 ${c.favorito ? 'fill-amber-400 text-amber-400' : ''}"></i>
+              </button>
+            </div>
+
+            <!-- Datos de Contacto -->
+            <div class="space-y-2 py-2 border-y border-slate-800/60 my-2 text-xs text-slate-300">
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i>
+                <a href="tel:${c.telefono}" class="hover:text-white hover:underline">${c.telefono}</a>
+              </div>
+              ${c.email ? `
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-500"></i>
+                <a href="mailto:${c.email}" class="hover:text-white hover:underline truncate">${c.email}</a>
+              </div>` : ''}
+              ${c.notas ? `
+              <div class="flex items-start gap-2.5 text-slate-400 italic pt-1">
+                <i data-lucide="message-square" class="w-3.5 h-3.5 text-slate-500 mt-0.5 flex-shrink-0"></i>
+                <span class="line-clamp-2">${c.notas}</span>
+              </div>` : ''}
+            </div>
+
+            <!-- Footer: Tag y Botones de acción -->
+            <div class="flex items-center justify-between pt-3 mt-1">
+              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase border ${categoryColor}">
+                ${c.categoria || 'General'}
+              </span>
+
+              <div class="flex items-center gap-1">
+                <button onclick="openModal('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" title="Editar">
+                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                </button>
+                <button onclick="deleteContact('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition" title="Eliminar">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function getCategoryBadge(cat = '') {
+      switch (cat.toUpperCase()) {
+        case 'TRABAJO': return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+        case 'VIP': return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+        case 'FAMILIA': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+        case 'AMIGOS': return 'bg-purple-500/10 text-purple-400 border-purple-500/20';
+        default: return 'bg-slate-700/30 text-slate-400 border-slate-700/40';
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').textContent = contacts.length;
+      document.getElementById('statFavorites').textContent = contacts.filter(c => c.favorito).length;
+      const companies = new Set(contacts.map(c => c.empresa).filter(Boolean));
+      document.getElementById('statCompanies').textContent = companies.size;
+    }
+
+    // MODAL CONTROL
+    function openModal(id = null) {
+      document.getElementById('contactForm').reset();
+      document.getElementById('contactId').value = '';
+      const modal = document.getElementById('contactModal');
+      const title = document.getElementById('modalTitle');
+
+      if (id) {
+        const c = contacts.find(item => item.id === id);
+        if (c) {
+          title.innerHTML = `<i data-lucide="edit" class="w-5 h-5 text-brand-400"></i> Editar Contacto`;
+          document.getElementById('contactId').value = c.id;
+          document.getElementById('inputName').value = c.nombre || '';
+          document.getElementById('inputPhone').value = c.telefono || '';
+          document.getElementById('inputEmail').value = c.email || '';
+          document.getElementById('inputCompany').value = c.empresa || '';
+          document.getElementById('inputCategory').value = c.categoria || 'Personal';
+          document.getElementById('inputNotes').value = c.notas || '';
+          document.getElementById('inputFavorite').checked = !!c.favorito;
+        }
+      } else {
+        title.innerHTML = `<i data-lucide="user-plus" class="w-5 h-5 text-brand-400"></i> Nuevo Contacto`;
+      }
+
+      modal.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModal() {
+      document.getElementById('contactModal').classList.add('hidden');
+    }
+
+    function openConfigModal() {
+      document.getElementById('configModal').classList.remove('hidden');
+    }
+
+    function closeConfigModal() {
+      document.getElementById('configModal').classList.add('hidden');
+    }
+
+    function saveApiUrl() {
+      const url = document.getElementById('apiUrlInput').value.trim().replace(/\/$/, '');
+      apiUrl = url;
+      localStorage.setItem('AWS_CONTACTS_API_URL', apiUrl);
+      updateBackendStatusBadge();
+      closeConfigModal();
+      showToast(apiUrl ? 'Conectado a AWS correctamente' : 'Cambiado a modo demo local', 'success');
+      loadContacts();
+    }
+
+    function resetToLocalDemo() {
+      apiUrl = '';
+      localStorage.removeItem('AWS_CONTACTS_API_URL');
+      document.getElementById('apiUrlInput').value = '';
+      updateBackendStatusBadge();
+      closeConfigModal();
+      showToast('Regresando a datos locales en memoria', 'info');
+      loadContacts();
+    }
+
+    // TOASTS
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      const colors = {
+        success: 'border-emerald-500/40 bg-slate-900/95 text-emerald-300',
+        error: 'border-rose-500/40 bg-slate-900/95 text-rose-300',
+        info: 'border-indigo-500/40 bg-slate-900/95 text-indigo-300'
+      };
+
+      toast.className = `glass flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs font-semibold shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 ${colors[type] || colors.info}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-4');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
