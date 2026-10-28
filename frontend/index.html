@@ -325,6 +325,151 @@
     </div>
   </div>
 
+  <!-- MODAL: Página / Vista de Detalle de Contacto (Gossu Luxury Profile) -->
+  <div id="detailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-onyx-950/80 backdrop-blur-md p-4 sm:p-6 overflow-y-auto" onclick="if(event.target === this) closeDetailModal()">
+    <div id="detailCard" class="bg-white w-full max-w-2xl rounded-[36px] border-2 border-gold-400 overflow-hidden shadow-2xl relative transition-all duration-300 transform scale-95 opacity-0 my-auto">
+      
+      <!-- Top Hero Cover -->
+      <div class="relative w-full h-72 sm:h-80 bg-onyx-950 overflow-hidden">
+        <img id="detailHeroImg" src="" alt="Cover" class="w-full h-full object-cover">
+        <div id="detailHeroPlaceholder" class="w-full h-full wine-gradient flex flex-col items-center justify-center p-6 text-center relative hidden">
+          <div id="detailHeroInitials" class="w-24 h-24 rounded-3xl border-2 border-gold-400 flex items-center justify-center text-gold-200 font-serif font-bold text-4xl shadow-2xl backdrop-blur-sm bg-black/20">
+          </div>
+          <span class="text-xs tracking-[0.3em] text-gold-300 uppercase font-sans mt-4">Perfil Confidencial</span>
+        </div>
+
+        <!-- Dark Gradient Overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/50"></div>
+
+        <!-- Top Navigation Bar -->
+        <div class="absolute top-5 left-5 right-5 flex items-center justify-between z-20">
+          <button onclick="closeDetailModal()" class="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-black/60 hover:bg-black/85 text-gold-200 border border-gold-400/50 text-xs font-bold tracking-wider transition shadow-lg">
+            <i data-lucide="arrow-left" class="w-4 h-4 text-gold-400"></i>
+            <span>Volver al Directorio</span>
+          </button>
+
+          <div class="flex items-center gap-2">
+            <button id="detailFavBtn" onclick="toggleDetailFavorite()" class="p-2.5 rounded-full backdrop-blur-md bg-black/60 hover:bg-gold-500/30 text-gold-400 border border-gold-400/50 transition shadow-lg" title="Favorito VIP">
+              <i data-lucide="star" id="detailFavIcon" class="w-4 h-4"></i>
+            </button>
+            <button id="detailEditBtn" onclick="editFromDetail()" class="p-2.5 rounded-full backdrop-blur-md bg-black/60 hover:bg-black/90 text-white border border-gold-400/50 transition shadow-lg" title="Editar">
+              <i data-lucide="edit-3" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Title & Badges in Hero -->
+        <div class="absolute bottom-6 left-6 right-6 z-20">
+          <div class="flex items-center gap-2 mb-2">
+            <span id="detailCategoryBadge" class="px-3.5 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase backdrop-blur-md bg-black/60 text-gold-200 border border-gold-400/60 shadow">
+              VIP
+            </span>
+            <span class="text-[11px] font-bold tracking-widest text-gold-300 uppercase drop-shadow" id="detailCompanyHeader">
+              TECSUP CLOUD COMPUTING
+            </span>
+          </div>
+
+          <h2 id="detailName" class="text-3xl sm:text-4xl font-bold font-serif text-white tracking-tight drop-shadow-md">
+            Ing. Jaime Farfán
+          </h2>
+        </div>
+      </div>
+
+      <!-- Detail Body Container -->
+      <div class="p-6 sm:p-8 bg-ivory-100 rounded-t-[32px] -mt-6 relative z-10 border-t border-gold-300 shadow-xl space-y-5">
+        
+        <!-- Action Hub: Quick Communication Buttons -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <a id="detailCallAction" href="#" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+            <div class="w-10 h-10 rounded-xl wine-gradient flex items-center justify-center text-gold-200 mb-2 shadow group-hover:scale-110 transition-transform">
+              <i data-lucide="phone-call" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-bold text-onyx-950">Llamar</span>
+            <span class="text-[10px] text-onyx-800/60">Marcar voz</span>
+          </a>
+
+          <a id="detailMailAction" href="#" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+            <div class="w-10 h-10 rounded-xl bg-gold-500 flex items-center justify-center text-white mb-2 shadow group-hover:scale-110 transition-transform">
+              <i data-lucide="mail" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-bold text-onyx-950">Mensaje</span>
+            <span class="text-[10px] text-onyx-800/60">Enviar email</span>
+          </a>
+
+          <a id="detailWhatsappAction" target="_blank" href="#" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+            <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white mb-2 shadow group-hover:scale-110 transition-transform">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-bold text-onyx-950">WhatsApp</span>
+            <span class="text-[10px] text-onyx-800/60">Chat directo</span>
+          </a>
+
+          <button onclick="copyContactCard()" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+            <div class="w-10 h-10 rounded-xl bg-onyx-900 flex items-center justify-center text-gold-300 mb-2 shadow group-hover:scale-110 transition-transform">
+              <i data-lucide="share-2" class="w-5 h-5"></i>
+            </div>
+            <span class="text-xs font-bold text-onyx-950">Compartir</span>
+            <span class="text-[10px] text-onyx-800/60">Copiar ficha</span>
+          </button>
+        </div>
+
+        <!-- Section: Información de Contacto -->
+        <div class="bg-white p-5 rounded-2xl border border-gold-200 shadow-sm space-y-3">
+          <span class="text-[10px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block mb-1">
+            CANALES DE COMUNICACIÓN
+          </span>
+
+          <div class="flex items-center justify-between py-2 border-b border-gold-100 text-sm">
+            <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4 text-wine-800"></i> Teléfono Móvil
+            </span>
+            <span id="detailPhoneText" class="font-bold text-onyx-950 tracking-wide font-sans">+51 987 654 321</span>
+          </div>
+
+          <div class="flex items-center justify-between py-2 border-b border-gold-100 text-sm">
+            <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2">
+              <i data-lucide="mail" class="w-4 h-4 text-gold-600"></i> Correo Electrónico
+            </span>
+            <span id="detailEmailText" class="font-bold text-onyx-950 font-sans truncate max-w-xs">jfarfan@tecsup.edu.pe</span>
+          </div>
+
+          <div class="flex items-center justify-between py-2 text-sm">
+            <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2">
+              <i data-lucide="building" class="w-4 h-4 text-onyx-700"></i> Organización / Empresa
+            </span>
+            <span id="detailCompanyText" class="font-bold text-onyx-950 font-sans">Cátedra de Arquitectura Cloud</span>
+          </div>
+        </div>
+
+        <!-- Section: Anotaciones Confidenciales -->
+        <div class="bg-white p-5 rounded-2xl border border-gold-200 shadow-sm">
+          <span class="text-[10px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block mb-2">
+            ANOTACIONES & OBSERVACIONES
+          </span>
+          <p id="detailNotesText" class="text-xs text-onyx-800 leading-relaxed font-sans bg-ivory-50 p-3.5 rounded-xl border border-gold-100 italic">
+            "Diseño e implementación de entornos virtualizados de alta disponibilidad en AWS EC2."
+          </p>
+        </div>
+
+        <!-- Section: Telemetría Cloud & Auditoría -->
+        <div class="bg-ivory-200/60 p-4 rounded-2xl border border-gold-200/80 flex flex-wrap items-center justify-between gap-3 text-[11px] text-onyx-800/70">
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Servidor: <strong class="text-onyx-950">AWS EC2 (Debian 12)</strong></span>
+          </div>
+          <div>
+            <span>ID Registro: <code id="detailRecordId" class="text-[10px] bg-white px-2 py-0.5 rounded border border-gold-300 font-mono text-wine-900">#1</code></span>
+          </div>
+          <div>
+            <span>Sincronización: <strong class="text-emerald-700">Persistente</strong></span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
   <!-- MODAL: Configuración AWS Cloud -->
   <div id="configModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-onyx-950/70 backdrop-blur-sm p-4">
     <div class="bg-white w-full max-w-md rounded-3xl border-2 border-gold-400 p-6 shadow-2xl">
@@ -623,7 +768,7 @@
         const badgeStyle = getCategoryBadge(c.categoria);
 
         return `
-          <div class="card-luxury rounded-[32px] overflow-hidden border border-gold-300/80 hover:border-gold-500 bg-white shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col group">
+          <div onclick="openDetailModal('${c.id}')" class="card-luxury rounded-[32px] overflow-hidden border border-gold-300/80 hover:border-gold-500 bg-white shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col group cursor-pointer">
             
             <!-- PORTADA HERO SUPERIOR (Formato Rectangular Completo estilo Bento / Referencia) -->
             <div class="relative w-full h-64 overflow-hidden bg-onyx-950 flex-shrink-0">
@@ -647,7 +792,7 @@
                   ${c.categoria || 'VIP'}
                 </span>
 
-                <button onclick="toggleFavorite('${c.id}')" class="p-2 rounded-full backdrop-blur-md bg-black/60 hover:bg-gold-500/30 border border-gold-400/60 text-gold-400 transition shadow-lg" title="Favorito VIP">
+                <button onclick="event.stopPropagation(); toggleFavorite('${c.id}')" class="p-2 rounded-full backdrop-blur-md bg-black/60 hover:bg-gold-500/30 border border-gold-400/60 text-gold-400 transition shadow-lg" title="Favorito VIP">
                   <i data-lucide="star" class="w-4 h-4 ${c.favorito ? 'fill-gold-400 text-gold-400' : ''}"></i>
                 </button>
               </div>
@@ -677,7 +822,7 @@
 
                 <!-- Enlaces de Teléfono y Correo -->
                 <div class="mt-4 pt-4 border-t border-gold-200/80 space-y-2 text-xs">
-                  <a href="tel:${c.telefono}" class="flex items-center gap-2.5 text-onyx-900 font-semibold hover:text-wine-800 transition group/item">
+                  <a href="tel:${c.telefono}" onclick="event.stopPropagation()" class="flex items-center gap-2.5 text-onyx-900 font-semibold hover:text-wine-800 transition group/item">
                     <div class="w-7 h-7 rounded-lg bg-wine-50 flex items-center justify-center text-wine-800 border border-wine-100 flex-shrink-0 group-hover/item:bg-wine-800 group-hover/item:text-gold-200 transition">
                       <i data-lucide="phone" class="w-3.5 h-3.5"></i>
                     </div>
@@ -685,7 +830,7 @@
                   </a>
 
                   ${c.email ? `
-                  <a href="mailto:${c.email}" class="flex items-center gap-2.5 text-onyx-800 font-medium hover:text-wine-800 transition group/item">
+                  <a href="mailto:${c.email}" onclick="event.stopPropagation()" class="flex items-center gap-2.5 text-onyx-800 font-medium hover:text-wine-800 transition group/item">
                     <div class="w-7 h-7 rounded-lg bg-gold-50 flex items-center justify-center text-gold-700 border border-gold-200 flex-shrink-0 group-hover/item:bg-gold-500 group-hover/item:text-white transition">
                       <i data-lucide="mail" class="w-3.5 h-3.5"></i>
                     </div>
@@ -696,16 +841,16 @@
 
               <!-- Barra de Acciones Inferior -->
               <div class="flex items-center justify-between pt-4 mt-4 border-t border-gold-200/80">
-                <a href="tel:${c.telefono}" class="px-4 py-2 rounded-xl wine-gradient text-gold-100 text-xs font-serif font-bold tracking-wider uppercase border border-gold-500/60 hover:brightness-110 transition flex items-center gap-2 shadow-md">
+                <a href="tel:${c.telefono}" onclick="event.stopPropagation()" class="px-4 py-2 rounded-xl wine-gradient text-gold-100 text-xs font-serif font-bold tracking-wider uppercase border border-gold-500/60 hover:brightness-110 transition flex items-center gap-2 shadow-md">
                   <i data-lucide="phone-call" class="w-3.5 h-3.5 text-gold-300"></i>
                   <span>Llamar</span>
                 </a>
 
                 <div class="flex items-center gap-1.5">
-                  <button onclick="openModal('${c.id}')" class="p-2.5 rounded-xl bg-white hover:bg-gold-100 text-onyx-700 hover:text-wine-800 border border-gold-200 transition shadow-sm" title="Editar">
+                  <button onclick="event.stopPropagation(); openModal('${c.id}')" class="p-2.5 rounded-xl bg-white hover:bg-gold-100 text-onyx-700 hover:text-wine-800 border border-gold-200 transition shadow-sm" title="Editar">
                     <i data-lucide="edit-3" class="w-4 h-4"></i>
                   </button>
-                  <button onclick="deleteContact('${c.id}')" class="p-2.5 rounded-xl bg-white hover:bg-rose-50 text-onyx-700 hover:text-rose-700 border border-gold-200 transition shadow-sm" title="Eliminar">
+                  <button onclick="event.stopPropagation(); deleteContact('${c.id}')" class="p-2.5 rounded-xl bg-white hover:bg-rose-50 text-onyx-700 hover:text-rose-700 border border-gold-200 transition shadow-sm" title="Eliminar">
                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                   </button>
                 </div>
@@ -870,6 +1015,108 @@
       closeConfigModal();
       showToast('Restaurando catálogo local', 'info');
       loadContacts();
+    }
+
+    // PÁGINA / MODAL DE DETALLE EXCLUSIVO (VISTA COMPLETA GOSSU)
+    let currentDetailId = null;
+
+    function openDetailModal(id) {
+      const c = contacts.find(item => item.id === id);
+      if (!c) return;
+      currentDetailId = id;
+
+      const modal = document.getElementById('detailModal');
+      const card = document.getElementById('detailCard');
+      const heroImg = document.getElementById('detailHeroImg');
+      const heroPlaceholder = document.getElementById('detailHeroPlaceholder');
+      const initials = c.nombre.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+
+      if (c.avatar_url) {
+        heroImg.src = c.avatar_url;
+        heroImg.classList.remove('hidden');
+        heroPlaceholder.classList.add('hidden');
+      } else {
+        heroImg.classList.add('hidden');
+        heroPlaceholder.classList.remove('hidden');
+        document.getElementById('detailHeroInitials').textContent = initials;
+      }
+
+      document.getElementById('detailCategoryBadge').textContent = c.categoria || 'VIP';
+      document.getElementById('detailCategoryBadge').className = `px-3.5 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase backdrop-blur-md border shadow ${getCategoryBadge(c.categoria)}`;
+      document.getElementById('detailCompanyHeader').textContent = (c.empresa || 'CLIENTE DISTINGUIDO').toUpperCase();
+      document.getElementById('detailName').textContent = c.nombre;
+
+      // Acciones rápidas
+      document.getElementById('detailCallAction').href = `tel:${c.telefono}`;
+      document.getElementById('detailMailAction').href = c.email ? `mailto:${c.email}` : '#';
+      const cleanPhone = c.telefono.replace(/[^0-9]/g, '');
+      document.getElementById('detailWhatsappAction').href = cleanPhone ? `https://wa.me/${cleanPhone}` : '#';
+
+      // Detalles textuales
+      document.getElementById('detailPhoneText').textContent = c.telefono;
+      document.getElementById('detailEmailText').textContent = c.email || 'No especificado';
+      document.getElementById('detailCompanyText').textContent = c.empresa || 'Sin empresa registrada';
+      document.getElementById('detailNotesText').textContent = c.notas ? `"${c.notas}"` : 'Sin anotaciones adicionales registradas.';
+      document.getElementById('detailRecordId').textContent = `#${c.id}`;
+
+      // Estado de estrella VIP
+      const favIcon = document.getElementById('detailFavIcon');
+      if (c.favorito) {
+        favIcon.className = 'w-4 h-4 fill-gold-400 text-gold-400';
+      } else {
+        favIcon.className = 'w-4 h-4 text-gold-400';
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+
+      // Transición fluida con resorte elegante
+      setTimeout(() => {
+        card.classList.remove('scale-95', 'opacity-0');
+        card.classList.add('scale-100', 'opacity-100');
+      }, 10);
+    }
+
+    function closeDetailModal() {
+      const modal = document.getElementById('detailModal');
+      const card = document.getElementById('detailCard');
+
+      card.classList.remove('scale-100', 'opacity-100');
+      card.classList.add('scale-95', 'opacity-0');
+
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }, 250);
+    }
+
+    function toggleDetailFavorite() {
+      if (!currentDetailId) return;
+      toggleFavorite(currentDetailId);
+      const c = contacts.find(item => item.id === currentDetailId);
+      const favIcon = document.getElementById('detailFavIcon');
+      if (c && c.favorito) {
+        favIcon.className = 'w-4 h-4 fill-gold-400 text-gold-400';
+      } else {
+        favIcon.className = 'w-4 h-4 text-gold-400';
+      }
+    }
+
+    function editFromDetail() {
+      const id = currentDetailId;
+      closeDetailModal();
+      setTimeout(() => {
+        openModal(id);
+      }, 260);
+    }
+
+    function copyContactCard() {
+      const c = contacts.find(item => item.id === currentDetailId);
+      if (!c) return;
+      const text = `⚜️ *FICHA DE CONTACTO PRIVÉ*\n👤 Nombre: ${c.nombre}\n💼 Rol/Empresa: ${c.empresa || 'N/A'}\n📞 Teléfono: ${c.telefono}\n✉️ Email: ${c.email || 'N/A'}\n🔖 Categoría: ${c.categoria || 'VIP'}`;
+      navigator.clipboard.writeText(text);
+      showToast('Ficha de contacto copiada al portapapeles 📋', 'success');
     }
 
     function showToast(message, type = 'info') {
