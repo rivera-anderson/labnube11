@@ -1,81 +1,87 @@
-# ⚡ Nexus Contacts - AWS Serverless Edition
+# ⚜️ Nexus Privé - Cloud Contacts Management System
 
-Una aplicación moderna, ultra rápida y de costo $0 en la capa gratuita de AWS para gestión de contactos.
+> **Laboratorio 11: Virtualización en AWS (EC2 + Linux Ubuntu/Debian + Node.js + PM2)**  
+> **Curso:** Desarrollo de Soluciones en la Nube | **Profesor:** Jaime Farfán | **Institución:** Tecsup C24
+
+![AWS EC2](https://img.shields.io/badge/AWS-EC2_Virtualization-FF9900?logo=amazon-aws&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/OS-Ubuntu_24.04_LTS-E95420?logo=ubuntu&logoColor=white)
+![NodeJS](https://img.shields.io/badge/Backend-Node.js_Express-339933?logo=node.js&logoColor=white)
+![PM2](https://img.shields.io/badge/Process_Manager-PM2_Online-2B037A?logo=pm2&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Frontend-Tailwind_Luxury-06B6D4?logo=tailwindcss&logoColor=white)
 
 ---
 
-## 🏗️ Arquitectura Serverless
+## 📸 Galería de Evidencias y Capturas
+
+### 1. Vista Principal del Directorio (Estilo Bento Card)
+![Catálogo de Contactos](screenshots/catalogo.png)
+
+### 2. Vista de Detalle de Contacto (Página Completa en SPA)
+![Ficha Completa de Contacto](screenshots/detalle.png)
+
+### 3. Servidor y Proceso Activo en AWS EC2 (PM2 Online 24/7)
+![Terminal PM2 AWS](screenshots/terminal.png)
+
+---
+
+## 🏗️ Arquitectura de la Solución Virtualizada
 
 ```
-[ Frontend: Tailwind + Glassmorphism ]
-                 │
-                 ▼ (HTTPS / REST)
-       [ Amazon API Gateway ]
-                 │
-                 ▼
-          [ AWS Lambda ]  (Python 3.12 / boto3)
-                 │
-                 ▼
-       [ Amazon DynamoDB ] (On-Demand NoSQL)
+[ Usuario en Internet ]
+           │
+           ▼ (HTTP - Puerto 80)
+ [ AWS Security Group ] (Reglas: SSH:22, HTTP:80)
+           │
+           ▼
+[ Instancia AWS EC2 ] (Ubuntu 24.04 LTS / Familia Debian)
+           │
+           ▼ (Gestor de Procesos 24/7)
+      [ PM2 Daemon ]
+           │
+           ▼
+    [ Node.js / Express ] (server.js en Puerto 80)
+           │
+           ├─► /api/contacts (CRUD RESTful: GET, POST, PUT, DELETE)
+           ├─► /health       (Healthcheck del servidor en la nube)
+           └─► /frontend     (SPA HTML5 + TailwindCSS + Lucide Icons)
 ```
 
-- **DynamoDB:** Facturación On-Demand (paga $0 cuando no hay peticiones).
-- **AWS Lambda:** Ejecución ARM64 ultra rápida con enrutador CRUD completo y CORS habilitado.
-- **Amazon API Gateway:** HTTP API v2 de baja latencia.
-- **Frontend:** Single Page Application (SPA) con Tailwind CSS, Lucide Icons, avatars automáticos y búsqueda en tiempo real.
+---
+
+## ✨ Características Principales
+
+- **CRUD Completo:** Creación, lectura, edición y eliminación de contactos con soporte para subida de imágenes reales (JPEG/PNG con compresión en Canvas).
+- **Diseño Editorial de Lujo:** Estética *Privé* en tonos marfil, borgoña y acentos dorados con tipografías de alta gama (`Cinzel` y `Playfair Display`).
+- **Navegación SPA Completa:** Vista de detalle dedicada en pantalla completa con historial de navegador (`hashchange`), bitácora confidencial y telemetría de nube.
+- **Despliegue Continuo con Git:** Clonado y configurado directamente desde el repositorio de GitHub en la instancia virtualizada de AWS.
+- **Alta Disponibilidad:** Configurado como servicio de producción con **PM2** con arranque automático en caso de reinicio de la máquina (`pm2 startup` y `pm2 save`).
 
 ---
 
-## 🚀 Inicio Rápido (En 10 segundos)
-
-### 1. Probar el Frontend de inmediato
-No necesitas instalar nada ni configurar Node.js:
-1. Abre el archivo `frontend/index.html` en tu navegador favorito (Chrome, Edge, Firefox, Brave).
-2. ¡Listo! Viene en **Modo Demo Local** con datos precargados y persistencia en `localStorage`.
-
----
-
-## ☁️ Despliegue en AWS (1 solo comando)
-
-Si tienes instalado [AWS SAM CLI](https://aws.amazon.com/serverless/sam/):
+## 🚀 Despliegue Rápido en una Instancia EC2
 
 ```bash
-cd infra
-sam build
-sam deploy --guided
-```
+# 1. Instalar entorno de ejecución
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt update && sudo apt install -y nodejs git
+sudo npm install -g pm2
 
-Al terminar, SAM te imprimirá en consola un `ApiEndpoint` parecido a este:
-```
-https://a1b2c3d4.execute-api.us-east-1.amazonaws.com
-```
+# 2. Clonar repositorio y dependencias
+git clone https://github.com/rivera-anderson/labnube11.git app
+cd app
+npm install
 
-### Conectar tu Frontend con AWS:
-1. Abre tu `index.html`.
-2. Haz clic en la píldora superior **"Modo Demo Local"** o en el ícono de engranaje.
-3. Pega la URL de tu `ApiEndpoint` y dale a **"Guardar y Conectar"**.
-4. ¡A partir de ese momento tus contactos se guardan directamente en **DynamoDB**!
+# 3. Iniciar servicio en producción en puerto 80
+sudo PORT=80 pm2 start server.js --name "nexus"
+sudo pm2 startup
+sudo pm2 save
+```
 
 ---
 
-## 🛠️ Despliegue Manual desde la Consola de AWS
+## 📝 Conclusiones Técnicas del Laboratorio
 
-Si prefieres hacerlo a mano desde la consola web:
-
-1. **DynamoDB:**
-   - Crear tabla: `Contactos`
-   - Clave de partición: `id` (String)
-   - Capacidad: Bajo demanda (*On-Demand*)
-
-2. **AWS Lambda:**
-   - Crear función: `ContactsCrudFunction`
-   - Runtime: `Python 3.12`
-   - Copiar y pegar el código de `backend/lambda_function.py`.
-   - En **Configuración > Permisos**, añadir permisos a la política de ejecución para DynamoDB (`AmazonDynamoDBFullAccess` o política de lectura/escritura en la tabla).
-
-3. **API Gateway:**
-   - Crear **HTTP API**.
-   - Integración: AWS Lambda (`ContactsCrudFunction`).
-   - Rutas:
-     - `ANY /{proxy+}` o crear las rutas `/contacts` y `/contacts/{id}` para `GET`, `POST`, `PUT`, `DELETE`.
-   - En **CORS**: Habilitar orígenes permitidos `*`, headers `*`, métodos `*`.
+1. **Aprovisionamiento y Aislamiento:** La virtualización mediante AWS EC2 permite levantar sistemas operativos completos bajo demanda con separación de recursos garantizada mediante hardware virtualizado.
+2. **Administración Liviana:** El uso de entornos Linux (familia Debian/Ubuntu) administrados mediante SSH optimiza radicalmente el consumo de RAM y ancho de banda en comparación con escritorios gráficos RDP.
+3. **Control Perimetral:** La disponibilidad del servicio hacia el exterior depende estrictamente de las reglas del Grupo de Seguridad (Security Group), requiriendo abrir explícitamente el puerto `80/TCP`.
+4. **Resiliencia de Procesos:** La integración de PM2 garantiza la continuidad operativa 24/7 de la aplicación en la nube sin depender de terminales activas.
