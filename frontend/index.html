@@ -1,264 +1,345 @@
 <!DOCTYPE html>
-<html lang="es" class="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nexus Contacts | Cloud Edition</title>
+  <title>Nexus Luxury Directory | Cloud Edition</title>
+  
+  <!-- Tipografías de Alta Gama -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
+  
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            brand: {
-              50: '#eef2ff',
-              400: '#818cf8',
-              500: '#6366f1',
-              600: '#4f46e5',
-              700: '#4338ca'
+            wine: {
+              50: '#fdf2f4',
+              100: '#fce7ea',
+              200: '#fad2d8',
+              300: '#f4adc7',
+              600: '#8c162b',
+              700: '#721223',
+              800: '#5a0e1c',
+              900: '#480b16',
+              950: '#2b040b'
+            },
+            gold: {
+              50: '#fbf9f2',
+              100: '#f6f1df',
+              200: '#ede1bf',
+              300: '#dfcb94',
+              400: '#ceb06c',
+              500: '#c59d42',
+              600: '#b08633',
+              700: '#8c6527',
+              800: '#725124',
+              900: '#5e4321'
+            },
+            onyx: {
+              800: '#242429',
+              900: '#161619',
+              950: '#0c0c0e'
+            },
+            ivory: {
+              50: '#ffffff',
+              100: '#fdfcf9',
+              200: '#f8f5ee',
+              300: '#f1ebd9',
+              400: '#e5dcbe'
             }
+          },
+          fontFamily: {
+            display: ['Cinzel', 'serif'],
+            serif: ['Playfair Display', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
           }
         }
       }
     }
   </script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f7f4ee;
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(197, 157, 66, 0.08) 0px, transparent 50%),
+        radial-gradient(at 90% 90%, rgba(90, 14, 28, 0.06) 0px, transparent 50%),
+        radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.9) 0px, transparent 100%);
+      background-attachment: fixed;
     }
-    .glass {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #725124 0%, #c59d42 50%, #8c6527 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .glass-card {
-      background: rgba(30, 41, 59, 0.6);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.25s ease;
+
+    .wine-gradient {
+      background: linear-gradient(135deg, #5a0e1c 0%, #721223 50%, #480b16 100%);
     }
-    .glass-card:hover {
-      border-color: rgba(99, 102, 241, 0.4);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.2);
+
+    .gold-border-glow {
+      box-shadow: 0 0 0 1px rgba(197, 157, 66, 0.25), 0 8px 24px -4px rgba(90, 14, 28, 0.08);
+    }
+
+    .card-luxury {
+      background: #ffffff;
+      border: 1px solid rgba(197, 157, 66, 0.22);
+      box-shadow: 0 10px 30px -8px rgba(36, 36, 41, 0.06);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-luxury:hover {
+      border-color: rgba(197, 157, 66, 0.65);
+      transform: translateY(-3px);
+      box-shadow: 0 18px 36px -10px rgba(90, 14, 28, 0.12), 0 0 0 1px rgba(197, 157, 66, 0.4);
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen selection:bg-brand-500 selection:text-white">
 
-  <!-- Ambient Glow Background -->
-  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-    <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl"></div>
-    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl"></div>
-    <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-emerald-600/15 rounded-full blur-3xl"></div>
-  </div>
+<body class="text-onyx-900 min-h-screen selection:bg-wine-800 selection:text-gold-200">
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
-    <!-- Header & Status Bar -->
-    <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-8 border-b border-slate-800">
-      <div>
-        <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-600 to-violet-500 flex items-center justify-center shadow-lg shadow-brand-500/30">
-            <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
+    <!-- Header Section (Luxury Editorial Style) -->
+    <header class="border-b border-gold-300/60 pb-8">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        
+        <!-- Brand Crest & Titles -->
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl wine-gradient flex items-center justify-center border-2 border-gold-400 shadow-xl shadow-wine-900/25 relative group">
+            <i data-lucide="crown" class="w-7 h-7 text-gold-300 transition-transform group-hover:scale-110"></i>
+            <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-gold-500 border-2 border-white"></div>
           </div>
+
           <div>
-            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-              Nexus Contacts
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-bold tracking-[0.28em] text-wine-800 uppercase font-sans">
+                Directorio Exclusivo • AWS Cloud Edition
+              </span>
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-gold-500"></span>
+              <span class="text-[10px] font-semibold tracking-widest text-gold-700 uppercase">Debian 12 EC2</span>
+            </div>
+            
+            <h1 class="text-3xl sm:text-4xl font-black font-display tracking-wider text-onyx-950 mt-0.5">
+              NEXUS <span class="gold-gradient-text">PRIVÉ</span>
             </h1>
-            <p class="text-xs sm:text-sm text-slate-400 font-medium">Serverless Architecture on AWS (Lambda + DynamoDB)</p>
           </div>
         </div>
+
+        <!-- Luxury Actions & Status Bar -->
+        <div class="flex items-center gap-3 flex-wrap">
+          <!-- Backend Connection Badge -->
+          <button onclick="openConfigModal()" class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white border border-gold-300 text-xs font-semibold text-onyx-800 shadow-sm hover:border-gold-500 hover:shadow-md transition">
+            <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-gold-500 animate-pulse"></span>
+            <span id="statusLabel" class="tracking-wide">Modo Demo Local</span>
+            <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5 text-gold-700 ml-1"></i>
+          </button>
+
+          <!-- New Contact Button (Wine & Gold) -->
+          <button onclick="openModal()" class="flex items-center gap-2.5 px-5 py-2.5 rounded-xl wine-gradient text-gold-100 font-serif font-bold text-sm tracking-wide border border-gold-500/50 shadow-lg shadow-wine-900/30 hover:brightness-110 active:scale-95 transition-all">
+            <i data-lucide="plus" class="w-4 h-4 text-gold-400"></i>
+            <span>Nuevo Contacto</span>
+          </button>
+        </div>
+
       </div>
 
-      <!-- Controls & Status Badge -->
-      <div class="flex items-center gap-3 flex-wrap">
-        <!-- Backend Status Pill -->
-        <button onclick="openConfigModal()" class="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold glass border border-slate-700/60 hover:border-slate-500 transition">
-          <span id="statusDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-          <span id="statusLabel" class="text-slate-300">Modo Demo Local</span>
-          <i data-lucide="settings" class="w-3.5 h-3.5 text-slate-400 ml-1"></i>
-        </button>
+      <!-- Luxury Stats Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+        <div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-gold-200/80 shadow-sm">
+          <p class="text-[10px] font-bold tracking-[0.18em] text-wine-800/80 uppercase">Total Contactos</p>
+          <div id="statTotal" class="text-2xl font-bold font-serif text-onyx-950 mt-1">0</div>
+        </div>
 
-        <!-- New Contact Button -->
-        <button onclick="openModal()" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-brand-600/25 transition-all active:scale-95">
-          <i data-lucide="user-plus" class="w-4 h-4"></i>
-          <span>Nuevo Contacto</span>
-        </button>
+        <div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-gold-200/80 shadow-sm">
+          <p class="text-[10px] font-bold tracking-[0.18em] text-gold-700 uppercase">Favoritos VIP</p>
+          <div id="statFavorites" class="text-2xl font-bold font-serif text-gold-600 mt-1">0</div>
+        </div>
+
+        <div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-gold-200/80 shadow-sm">
+          <p class="text-[10px] font-bold tracking-[0.18em] text-onyx-800/70 uppercase">Compañías</p>
+          <div id="statCompanies" class="text-2xl font-bold font-serif text-wine-900 mt-1">0</div>
+        </div>
+
+        <div class="bg-white/80 backdrop-blur rounded-2xl p-4 border border-gold-200/80 shadow-sm">
+          <p class="text-[10px] font-bold tracking-[0.18em] text-gold-700 uppercase">Arquitectura AWS</p>
+          <div id="statLatency" class="text-2xl font-bold font-serif text-emerald-700 mt-1">Activo</div>
+        </div>
       </div>
     </header>
 
-    <!-- Stats Bar -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 my-6">
-      <div class="glass p-4 rounded-2xl">
-        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Contactos</span>
-        <div id="statTotal" class="text-2xl font-bold mt-1 text-white">0</div>
-      </div>
-      <div class="glass p-4 rounded-2xl">
-        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Favoritos</span>
-        <div id="statFavorites" class="text-2xl font-bold mt-1 text-amber-400">0</div>
-      </div>
-      <div class="glass p-4 rounded-2xl">
-        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Empresas</span>
-        <div id="statCompanies" class="text-2xl font-bold mt-1 text-indigo-400">0</div>
-      </div>
-      <div class="glass p-4 rounded-2xl">
-        <span class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Latencia AWS</span>
-        <div id="statLatency" class="text-2xl font-bold mt-1 text-emerald-400">~15ms</div>
-      </div>
-    </div>
-
-    <!-- Filters & Search Toolbar -->
-    <div class="glass p-3 rounded-2xl mb-8 flex flex-col md:flex-row items-center gap-3">
-      <!-- Search Input -->
+    <!-- Toolbar: Search & Luxury Categories -->
+    <div class="my-8 bg-white/90 backdrop-blur p-4 rounded-2xl border border-gold-300/80 shadow-md flex flex-col md:flex-row items-center justify-between gap-4">
+      
+      <!-- Search Input with Wine & Gold Accents -->
       <div class="relative w-full md:flex-1">
-        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+        <i data-lucide="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-wine-800"></i>
         <input 
           id="searchInput" 
           type="text" 
-          placeholder="Buscar por nombre, correo, teléfono o empresa..." 
+          placeholder="Buscar por nombre, corporación, teléfono o correo..." 
           oninput="handleSearch()"
-          class="w-full pl-10 pr-4 py-2 bg-slate-900/60 border border-slate-700/60 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-slate-200 placeholder-slate-500 transition"
+          class="w-full pl-11 pr-4 py-2.5 bg-ivory-100 border border-gold-200 rounded-xl text-sm font-medium text-onyx-950 placeholder-onyx-800/40 focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 transition"
         >
       </div>
 
-      <!-- Category Filter Tabs -->
-      <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 scrollbar-none" id="categoryFilters">
-        <button onclick="setCategoryFilter('TODOS')" class="category-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white transition">Todos</button>
-        <button onclick="setCategoryFilter('TRABAJO')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">Trabajo</button>
-        <button onclick="setCategoryFilter('FAMILIA')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">Familia</button>
-        <button onclick="setCategoryFilter('AMIGOS')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">Amigos</button>
-        <button onclick="setCategoryFilter('VIP')" class="category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition">VIP</button>
+      <!-- Categories Filter Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto w-full md:w-auto pb-1 md:pb-0" id="categoryFilters">
+        <button onclick="setCategoryFilter('TODOS')" class="category-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wider font-sans uppercase wine-gradient text-gold-200 border border-gold-500 shadow-sm transition">Todos</button>
+        <button onclick="setCategoryFilter('VIP')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wider font-sans uppercase bg-ivory-200 text-onyx-800 border border-gold-200/80 hover:border-gold-400 transition">VIP</button>
+        <button onclick="setCategoryFilter('TRABAJO')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wider font-sans uppercase bg-ivory-200 text-onyx-800 border border-gold-200/80 hover:border-gold-400 transition">Trabajo</button>
+        <button onclick="setCategoryFilter('FAMILIA')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wider font-sans uppercase bg-ivory-200 text-onyx-800 border border-gold-200/80 hover:border-gold-400 transition">Familia</button>
+        <button onclick="setCategoryFilter('AMIGOS')" class="category-btn px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wider font-sans uppercase bg-ivory-200 text-onyx-800 border border-gold-200/80 hover:border-gold-400 transition">Amigos</button>
       </div>
     </div>
 
-    <!-- Contacts Grid -->
-    <div id="contactsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+    <!-- Contacts Cards Grid -->
+    <div id="contactsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <!-- Cards renderizadas dinámicamente -->
     </div>
 
     <!-- Empty State -->
-    <div id="emptyState" class="hidden text-center py-20">
-      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-slate-800/80 flex items-center justify-center text-slate-400">
-        <i data-lucide="contact" class="w-8 h-8"></i>
+    <div id="emptyState" class="hidden text-center py-20 bg-white/60 rounded-3xl border border-gold-200/60 my-6">
+      <div class="w-16 h-16 mx-auto mb-4 rounded-2xl wine-gradient flex items-center justify-center text-gold-300 border border-gold-400 shadow-md">
+        <i data-lucide="folder-search" class="w-8 h-8"></i>
       </div>
-      <h3 class="text-lg font-semibold text-white">No se encontraron contactos</h3>
-      <p class="text-sm text-slate-400 mt-1 max-w-sm mx-auto">Prueba cambiando los filtros o crea tu primer contacto en la nube.</p>
+      <h3 class="text-xl font-bold font-serif text-onyx-950">No se encontraron contactos</h3>
+      <p class="text-sm text-onyx-800/70 mt-1 max-w-sm mx-auto">Prueba ajustando los filtros o registra un nuevo contacto exclusivo.</p>
     </div>
 
   </div>
 
-  <!-- MODAL: Crear / Editar Contacto -->
-  <div id="contactModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-    <div class="glass w-full max-w-lg rounded-2xl border border-slate-700/80 p-6 shadow-2xl relative">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-5">
-        <h3 id="modalTitle" class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="user-check" class="w-5 h-5 text-brand-400"></i>
-          Nuevo Contacto
-        </h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+  <!-- MODAL: Crear / Editar Contacto (High Luxury Edition) -->
+  <div id="contactModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-onyx-950/75 backdrop-blur-sm p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl border-2 border-gold-400 p-7 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-gold-200 mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl wine-gradient flex items-center justify-center border border-gold-400">
+            <i data-lucide="user-check" class="w-4 h-4 text-gold-300"></i>
+          </div>
+          <div>
+            <h3 id="modalTitle" class="text-xl font-bold font-serif text-onyx-950">
+              Registrar Contacto
+            </h3>
+            <p class="text-[10px] tracking-widest uppercase text-wine-800 font-semibold">Directorio Nexus Privé</p>
+          </div>
+        </div>
+
+        <button onclick="closeModal()" class="text-onyx-800 hover:text-wine-800 p-1.5 rounded-xl hover:bg-gold-100 transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
+      <!-- Formulario CRUD -->
       <form id="contactForm" onsubmit="saveContact(event)" class="space-y-4">
         <input type="hidden" id="contactId">
 
         <div>
-          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Nombre Completo *</label>
-          <input id="inputName" type="text" required placeholder="Ej: Anderson Silva" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+          <label class="block text-[10px] font-bold tracking-wider uppercase text-wine-900 mb-1">Nombre Completo *</label>
+          <input id="inputName" type="text" required placeholder="Ej: Ing. Jaime Farfán" class="w-full px-4 py-2.5 bg-ivory-100 border border-gold-300 rounded-xl text-sm font-medium focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 text-onyx-950">
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Teléfono Móvil *</label>
-            <input id="inputPhone" type="tel" required placeholder="+51 987 654 321" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-wine-900 mb-1">Teléfono Móvil *</label>
+            <input id="inputPhone" type="tel" required placeholder="+51 987 654 321" class="w-full px-4 py-2.5 bg-ivory-100 border border-gold-300 rounded-xl text-sm font-medium focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 text-onyx-950">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Email</label>
-            <input id="inputEmail" type="email" placeholder="anderson@example.com" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-wine-900 mb-1">Correo Electrónico</label>
+            <input id="inputEmail" type="email" placeholder="usuario@tecsup.edu.pe" class="w-full px-4 py-2.5 bg-ivory-100 border border-gold-300 rounded-xl text-sm font-medium focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 text-onyx-950">
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Empresa / Rol</label>
-            <input id="inputCompany" type="text" placeholder="Tech Lead @ Google" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-wine-900 mb-1">Empresa / Cargo</label>
+            <input id="inputCompany" type="text" placeholder="Docente Cloud / Tech Lead" class="w-full px-4 py-2.5 bg-ivory-100 border border-gold-300 rounded-xl text-sm font-medium focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 text-onyx-950">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Categoría</label>
-            <select id="inputCategory" class="w-full px-3.5 py-2.5 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white">
+            <label class="block text-[10px] font-bold tracking-wider uppercase text-wine-900 mb-1">Categoría</label>
+            <select id="inputCategory" class="w-full px-4 py-2.5 bg-ivory-100 border border-gold-300 rounded-xl text-sm font-medium focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 text-onyx-950">
+              <option value="VIP">VIP</option>
               <option value="Trabajo">Trabajo</option>
               <option value="Familia">Familia</option>
               <option value="Amigos">Amigos</option>
-              <option value="VIP">VIP</option>
               <option value="Personal">Personal</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">Notas rápidas</label>
-          <textarea id="inputNotes" rows="2" placeholder="Detalles o anotaciones..." class="w-full px-3.5 py-2 bg-slate-900/80 border border-slate-700 rounded-xl text-sm focus:outline-none focus:border-brand-500 text-white resize-none"></textarea>
+          <label class="block text-[10px] font-bold tracking-wider uppercase text-wine-900 mb-1">Anotaciones Confidenciales</label>
+          <textarea id="inputNotes" rows="2" placeholder="Detalles de contacto, proyectos o reuniones..." class="w-full px-4 py-2.5 bg-ivory-100 border border-gold-300 rounded-xl text-sm font-medium focus:outline-none focus:border-wine-700 focus:ring-1 focus:ring-wine-700 text-onyx-950 resize-none"></textarea>
         </div>
 
         <div class="flex items-center gap-2 pt-1">
-          <input id="inputFavorite" type="checkbox" class="w-4 h-4 rounded border-slate-700 bg-slate-900 text-brand-600 focus:ring-0">
-          <label for="inputFavorite" class="text-sm font-medium text-slate-300">Marcar como contacto favorito</label>
+          <input id="inputFavorite" type="checkbox" class="w-4 h-4 rounded border-gold-400 text-wine-800 focus:ring-0">
+          <label for="inputFavorite" class="text-xs font-semibold text-onyx-800 flex items-center gap-1.5">
+            <i data-lucide="star" class="w-3.5 h-3.5 text-gold-500 fill-gold-500"></i>
+            Marcar como contacto prioritario / VIP
+          </label>
         </div>
 
-        <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-sm font-semibold text-slate-400 hover:text-white transition">Cancelar</button>
-          <button type="submit" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-sm font-semibold shadow-lg shadow-brand-600/30 transition">Guardar Contacto</button>
+        <div class="flex items-center justify-end gap-3 pt-5 border-t border-gold-200">
+          <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl text-xs font-bold tracking-wider uppercase text-onyx-800 hover:text-wine-800 hover:bg-gold-50 transition">Cancelar</button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl wine-gradient text-gold-100 text-xs font-bold tracking-wider uppercase border border-gold-500/60 shadow-lg shadow-wine-900/20 hover:brightness-110 transition">Guardar Contacto</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: Configuración de AWS API Gateway -->
-  <div id="configModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-    <div class="glass w-full max-w-md rounded-2xl border border-slate-700 p-6 shadow-2xl">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4">
-        <h3 class="text-lg font-bold text-white flex items-center gap-2">
-          <i data-lucide="cloud" class="w-5 h-5 text-indigo-400"></i>
+  <!-- MODAL: Configuración AWS Cloud -->
+  <div id="configModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-onyx-950/70 backdrop-blur-sm p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl border-2 border-gold-400 p-6 shadow-2xl">
+      <div class="flex items-center justify-between pb-3 border-b border-gold-200 mb-4">
+        <h3 class="text-lg font-bold font-serif text-onyx-950 flex items-center gap-2">
+          <i data-lucide="cloud" class="w-5 h-5 text-wine-800"></i>
           Conexión AWS Cloud
         </h3>
-        <button onclick="closeConfigModal()" class="text-slate-400 hover:text-white">
+        <button onclick="closeConfigModal()" class="text-onyx-800 hover:text-wine-800">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <p class="text-xs text-slate-300 mb-4 leading-relaxed">
-        Pega la URL de tu <strong>Amazon API Gateway</strong> para sincronizar directamente con tu Lambda y DynamoDB en AWS. Si está vacía, se usa el modo demo local.
+      <p class="text-xs text-onyx-800/80 mb-4 leading-relaxed">
+        Ingresa el endpoint de tu <strong>API REST en Debian o API Gateway</strong>. Si se deja en blanco, la app funciona en modo demo autónomo local.
       </p>
 
       <div class="space-y-4">
         <div>
-          <label class="block text-xs font-semibold uppercase text-slate-400 mb-1">URL Base de API Gateway</label>
-          <input id="apiUrlInput" type="url" placeholder="https://abc123xyz.execute-api.us-east-1.amazonaws.com" class="w-full px-3.5 py-2.5 bg-slate-900/90 border border-slate-700 rounded-xl text-xs focus:outline-none focus:border-brand-500 text-slate-200">
+          <label class="block text-[10px] font-bold tracking-wider uppercase text-wine-900 mb-1">URL API Endpoint</label>
+          <input id="apiUrlInput" type="url" placeholder="http://TU_IP_DEBIAN:80/api o AWS API Gateway" class="w-full px-3.5 py-2.5 bg-ivory-100 border border-gold-300 rounded-xl text-xs text-onyx-950 focus:outline-none focus:border-wine-700">
         </div>
 
         <div class="flex items-center justify-end gap-2 pt-2">
-          <button onclick="resetToLocalDemo()" type="button" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-amber-400 hover:bg-amber-400/10 transition">Usar Modo Demo</button>
-          <button onclick="saveApiUrl()" type="button" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold shadow transition">Guardar y Conectar</button>
+          <button onclick="resetToLocalDemo()" type="button" class="px-3 py-1.5 rounded-xl text-xs font-bold text-wine-800 hover:bg-wine-50 transition">Modo Demo</button>
+          <button onclick="saveApiUrl()" type="button" class="px-4 py-2 rounded-xl wine-gradient text-gold-100 text-xs font-bold tracking-wider uppercase border border-gold-400 shadow">Conectar</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <!-- Contenedor Toasts -->
   <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
 
-  <!-- APP JAVASCRIPT LOGIC -->
+  <!-- JAVASCRIPT LOGIC (CRUD COMPLETO) -->
   <script>
-    // ESTADO DE LA APP
     let contacts = [];
     let activeCategory = 'TODOS';
     let searchQuery = '';
+    
+    // Auto-detección inteligente del backend Node.js en Debian o Local
     let apiUrl = localStorage.getItem('AWS_CONTACTS_API_URL');
     if (apiUrl === null && window.location.protocol.startsWith('http') && window.location.port !== '5173') {
       apiUrl = window.location.origin + '/api';
@@ -266,44 +347,49 @@
       apiUrl = '';
     }
 
-    // DATOS DE PRUEBA GOSSU
-    const INITIAL_DEMO = [
+    const INITIAL_LUXURY_DEMO = [
       {
         id: '1',
-        nombre: 'Valeria Rivas',
-        telefono: '+51 981 234 567',
-        email: 'valeria.rivas@fintech.pe',
-        empresa: 'Chief Architect @ NuScale',
+        nombre: 'Ing. Jaime Farfán',
+        telefono: '+51 987 654 321',
+        email: 'jfarfan@tecsup.edu.pe',
+        empresa: 'Cátedra de Arquitectura Cloud & Virtualización',
         categoria: 'VIP',
         favorito: true,
-        avatar_url: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
-        notas: 'Contacto clave para arquitectura Cloud AWS'
+        notas: 'Evaluador principal del laboratorio de virtualización EC2.'
       },
       {
         id: '2',
-        nombre: 'Carlos Mendoza',
-        telefono: '+52 55 4321 9876',
-        email: 'carlos.m@devops.mx',
-        empresa: 'Lead SRE @ MercadoLibre',
+        nombre: 'Anderson Silva',
+        telefono: '+51 912 345 678',
+        email: 'anderson.dev@cloud.pe',
+        empresa: 'Arquitecto de Soluciones Cloud C24',
         categoria: 'Trabajo',
         favorito: true,
-        avatar_url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-        notas: 'Especialista en Kubernetes y Terraform'
+        notas: 'Diseñador del entorno virtualizado multi-OS en AWS.'
       },
       {
         id: '3',
-        nombre: 'Andrea Castillo',
-        telefono: '+56 9 8765 4321',
-        email: 'andrea.design@studio.cl',
-        empresa: 'Product Designer',
-        categoria: 'Amigos',
+        nombre: 'Soporte VIP AWS Enterprise',
+        telefono: '+1 800 555 0199',
+        email: 'concierge@aws.amazon.com',
+        empresa: 'Amazon Web Services Global',
+        categoria: 'VIP',
+        favorito: true,
+        notas: 'Línea prioritaria de soporte para clústeres EC2 Nitro.'
+      },
+      {
+        id: '4',
+        nombre: 'Dra. Elena De La Quintana',
+        telefono: '+51 998 776 554',
+        email: 'elena.quintana@inversiones.pe',
+        empresa: 'Directora de Operaciones Fintech',
+        categoria: 'Familia',
         favorito: false,
-        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        notas: 'Diseñó los mocks de la app móvil'
+        notas: 'Reunión trimestral de presupuesto de infraestructura.'
       }
     ];
 
-    // INICIALIZACIÓN
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
       updateBackendStatusBadge();
@@ -317,17 +403,17 @@
       input.value = apiUrl;
 
       if (apiUrl) {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400";
-        label.textContent = "Conectado a AWS";
-        label.className = "text-emerald-300 font-semibold";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-600 shadow-sm";
+        label.textContent = "Conectado a AWS / API";
+        label.className = "text-emerald-800 font-bold tracking-wide";
       } else {
-        dot.className = "w-2.5 h-2.5 rounded-full bg-amber-400";
+        dot.className = "w-2.5 h-2.5 rounded-full bg-gold-500";
         label.textContent = "Modo Demo Local";
-        label.className = "text-amber-300 font-semibold";
+        label.className = "text-onyx-800 font-semibold tracking-wide";
       }
     }
 
-    // CARGA DE CONTACTOS (AWS O LOCALSTORAGE)
+    // CARGA DE CONTACTOS (CRUD: READ)
     async function loadContacts() {
       const startTime = performance.now();
       if (apiUrl) {
@@ -339,7 +425,7 @@
           document.getElementById('statLatency').textContent = `${latency}ms`;
         } catch (err) {
           console.error(err);
-          showToast('Error conectando a AWS API Gateway. Usando cache local.', 'error');
+          showToast('Error conectando al servidor. Usando catálogo local.', 'error');
           loadFromLocal();
         }
       } else {
@@ -351,15 +437,15 @@
     }
 
     function loadFromLocal() {
-      const saved = localStorage.getItem('DEMO_CONTACTS');
-      contacts = saved ? JSON.parse(saved) : INITIAL_DEMO;
+      const saved = localStorage.getItem('LUXURY_CONTACTS');
+      contacts = saved ? JSON.parse(saved) : INITIAL_LUXURY_DEMO;
     }
 
     function saveToLocal() {
-      localStorage.setItem('DEMO_CONTACTS', JSON.stringify(contacts));
+      localStorage.setItem('LUXURY_CONTACTS', JSON.stringify(contacts));
     }
 
-    // GUARDAR O ACTUALIZAR
+    // GUARDAR O ACTUALIZAR (CRUD: CREATE & UPDATE)
     async function saveContact(e) {
       e.preventDefault();
       const id = document.getElementById('contactId').value;
@@ -370,8 +456,7 @@
         empresa: document.getElementById('inputCompany').value.trim(),
         categoria: document.getElementById('inputCategory').value,
         notas: document.getElementById('inputNotes').value.trim(),
-        favorito: document.getElementById('inputFavorite').checked,
-        avatar_url: id ? undefined : `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(document.getElementById('inputName').value)}`
+        favorito: document.getElementById('inputFavorite').checked
       };
 
       if (apiUrl) {
@@ -382,31 +467,30 @@
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)
             });
-            showToast('Contacto actualizado en AWS DynamoDB ✨', 'success');
+            showToast('Contacto actualizado en el servidor Cloud', 'success');
           } else {
             await fetch(`${apiUrl}/contacts`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(payload)
             });
-            showToast('Contacto creado en AWS DynamoDB 🚀', 'success');
+            showToast('Contacto registrado en la base de datos', 'success');
           }
         } catch (err) {
-          showToast('Error en la llamada a AWS', 'error');
+          showToast('Fallo de comunicación con el servidor', 'error');
           return;
         }
       } else {
-        // Guardado local
         if (id) {
           const idx = contacts.findIndex(c => c.id === id);
           if (idx !== -1) {
             contacts[idx] = { ...contacts[idx], ...payload };
-            showToast('Contacto actualizado localmente', 'success');
+            showToast('Contacto modificado localmente', 'success');
           }
         } else {
           payload.id = Date.now().toString();
           contacts.unshift(payload);
-          showToast('Contacto guardado localmente', 'success');
+          showToast('Contacto guardado exitosamente', 'success');
         }
         saveToLocal();
       }
@@ -415,28 +499,28 @@
       loadContacts();
     }
 
-    // ELIMINAR CONTACTO
+    // ELIMINAR CONTACTO (CRUD: DELETE)
     async function deleteContact(id) {
-      if (!confirm('¿Estás seguro de eliminar este contacto?')) return;
+      if (!confirm('¿Desea dar de baja este contacto del directorio?')) return;
 
       if (apiUrl) {
         try {
           await fetch(`${apiUrl}/contacts/${id}`, { method: 'DELETE' });
-          showToast('Contacto eliminado de DynamoDB', 'info');
+          showToast('Contacto eliminado del servidor', 'info');
         } catch (err) {
-          showToast('Error eliminando en AWS', 'error');
+          showToast('Error al eliminar en el servidor', 'error');
           return;
         }
       } else {
         contacts = contacts.filter(c => c.id !== id);
         saveToLocal();
-        showToast('Contacto eliminado', 'info');
+        showToast('Contacto retirado del directorio', 'info');
       }
 
       loadContacts();
     }
 
-    // TOGGLE FAVORITO
+    // FAVORITO TOGGLE
     async function toggleFavorite(id) {
       const contact = contacts.find(c => c.id === id);
       if (!contact) return;
@@ -455,7 +539,7 @@
       updateStats();
     }
 
-    // FILTRADO Y BÚSQUEDA
+    // FILTRADO
     function handleSearch() {
       searchQuery = document.getElementById('searchInput').value.toLowerCase();
       renderContacts();
@@ -465,27 +549,27 @@
       activeCategory = category;
       document.querySelectorAll('.category-btn').forEach(btn => {
         if (btn.textContent.trim().toUpperCase() === category) {
-          btn.className = "category-btn active px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-600 text-white transition";
+          btn.className = "category-btn active px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wider font-sans uppercase wine-gradient text-gold-200 border border-gold-500 shadow-sm transition";
         } else {
-          btn.className = "category-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-400 hover:text-white transition";
+          btn.className = "category-btn px-3.5 py-1.5 rounded-xl text-xs font-bold tracking-wider font-sans uppercase bg-ivory-200 text-onyx-800 border border-gold-200/80 hover:border-gold-400 transition";
         }
       });
       renderContacts();
     }
 
-    // RENDERIZADO VISUAL
+    // RENDERIZADO VISUAL EXCLUSIVO
     function renderContacts() {
       const grid = document.getElementById('contactsGrid');
       const emptyState = document.getElementById('emptyState');
 
       let filtered = contacts.filter(c => {
-        const matchesCategory = (activeCategory === 'TODOS') || (c.categoria && c.categoria.toUpperCase() === activeCategory);
-        const matchesSearch = !searchQuery || 
+        const matchesCat = (activeCategory === 'TODOS') || (c.categoria && c.categoria.toUpperCase() === activeCategory);
+        const matchesQuery = !searchQuery ||
           (c.nombre && c.nombre.toLowerCase().includes(searchQuery)) ||
           (c.email && c.email.toLowerCase().includes(searchQuery)) ||
           (c.telefono && c.telefono.includes(searchQuery)) ||
           (c.empresa && c.empresa.toLowerCase().includes(searchQuery));
-        return matchesCategory && matchesSearch;
+        return matchesCat && matchesQuery;
       });
 
       if (filtered.length === 0) {
@@ -497,60 +581,75 @@
       emptyState.classList.add('hidden');
 
       grid.innerHTML = filtered.map(c => {
-        const categoryColor = getCategoryBadge(c.categoria);
+        const initials = c.nombre.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+        const badgeStyle = getCategoryBadge(c.categoria);
+
         return `
-          <div class="glass-card rounded-2xl p-5 flex flex-col justify-between relative group">
-            <!-- Top Card Actions -->
-            <div class="flex items-start justify-between gap-3 mb-4">
-              <div class="flex items-center gap-3">
-                <img src="${c.avatar_url || 'https://api.dicebear.com/7.x/bottts/svg?seed=' + c.id}" 
-                     alt="${c.nombre}" 
-                     class="w-13 h-13 rounded-2xl bg-slate-800 object-cover ring-2 ring-slate-700/50 shadow-md">
-                <div>
-                  <h4 class="font-bold text-white text-base leading-tight group-hover:text-brand-400 transition">${c.nombre}</h4>
-                  <p class="text-xs text-slate-400 font-medium mt-0.5">${c.empresa || 'Sin empresa'}</p>
+          <div class="card-luxury rounded-2xl p-6 flex flex-col justify-between relative group">
+            
+            <!-- Top Card -->
+            <div>
+              <div class="flex items-start justify-between gap-3 mb-4">
+                <div class="flex items-center gap-3.5">
+                  
+                  <!-- Monograma Elegante -->
+                  <div class="w-13 h-13 rounded-2xl wine-gradient border-2 border-gold-400/80 flex items-center justify-center text-gold-200 font-serif font-bold text-base shadow-md">
+                    ${initials}
+                  </div>
+
+                  <div>
+                    <h4 class="font-serif font-bold text-onyx-950 text-lg leading-tight group-hover:text-wine-800 transition">${c.nombre}</h4>
+                    <p class="text-xs font-medium text-gold-700 mt-0.5 tracking-wide">${c.empresa || 'Cliente Distinguido'}</p>
+                  </div>
                 </div>
+
+                <!-- Botón Favorito VIP -->
+                <button onclick="toggleFavorite('${c.id}')" class="p-2 rounded-xl bg-ivory-100 hover:bg-gold-100 border border-gold-200/60 text-gold-600 transition" title="Marcar VIP">
+                  <i data-lucide="star" class="w-4 h-4 ${c.favorito ? 'fill-gold-500 text-gold-500' : 'text-gold-400'}"></i>
+                </button>
               </div>
 
-              <!-- Botón Favorito -->
-              <button onclick="toggleFavorite('${c.id}')" class="p-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-amber-400 transition">
-                <i data-lucide="star" class="w-4 h-4 ${c.favorito ? 'fill-amber-400 text-amber-400' : ''}"></i>
-              </button>
-            </div>
+              <!-- Detalles de Contacto -->
+              <div class="space-y-2 py-3 border-y border-gold-200/80 my-3 text-xs text-onyx-800">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-6 h-6 rounded-lg bg-wine-50 flex items-center justify-center text-wine-800">
+                    <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <a href="tel:${c.telefono}" class="font-semibold hover:text-wine-800 hover:underline tracking-wide">${c.telefono}</a>
+                </div>
 
-            <!-- Datos de Contacto -->
-            <div class="space-y-2 py-2 border-y border-slate-800/60 my-2 text-xs text-slate-300">
-              <div class="flex items-center gap-2.5">
-                <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-500"></i>
-                <a href="tel:${c.telefono}" class="hover:text-white hover:underline">${c.telefono}</a>
+                ${c.email ? `
+                <div class="flex items-center gap-2.5">
+                  <div class="w-6 h-6 rounded-lg bg-gold-50 flex items-center justify-center text-gold-700">
+                    <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                  </div>
+                  <a href="mailto:${c.email}" class="font-medium hover:text-wine-800 hover:underline truncate">${c.email}</a>
+                </div>` : ''}
+
+                ${c.notas ? `
+                <div class="flex items-start gap-2.5 pt-1 text-onyx-800/70 italic text-[11px]">
+                  <i data-lucide="quote" class="w-3.5 h-3.5 text-gold-600 mt-0.5 flex-shrink-0"></i>
+                  <span class="line-clamp-2">${c.notas}</span>
+                </div>` : ''}
               </div>
-              ${c.email ? `
-              <div class="flex items-center gap-2.5">
-                <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-500"></i>
-                <a href="mailto:${c.email}" class="hover:text-white hover:underline truncate">${c.email}</a>
-              </div>` : ''}
-              ${c.notas ? `
-              <div class="flex items-start gap-2.5 text-slate-400 italic pt-1">
-                <i data-lucide="message-square" class="w-3.5 h-3.5 text-slate-500 mt-0.5 flex-shrink-0"></i>
-                <span class="line-clamp-2">${c.notas}</span>
-              </div>` : ''}
             </div>
 
-            <!-- Footer: Tag y Botones de acción -->
-            <div class="flex items-center justify-between pt-3 mt-1">
-              <span class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase border ${categoryColor}">
-                ${c.categoria || 'General'}
+            <!-- Card Footer: Tag & Action Buttons -->
+            <div class="flex items-center justify-between pt-2">
+              <span class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border ${badgeStyle}">
+                ${c.categoria || 'VIP'}
               </span>
 
-              <div class="flex items-center gap-1">
-                <button onclick="openModal('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition" title="Editar">
+              <div class="flex items-center gap-1.5">
+                <button onclick="openModal('${c.id}')" class="p-2 rounded-xl text-onyx-700 hover:text-wine-800 hover:bg-gold-100 transition" title="Editar">
                   <i data-lucide="edit-3" class="w-4 h-4"></i>
                 </button>
-                <button onclick="deleteContact('${c.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition" title="Eliminar">
+                <button onclick="deleteContact('${c.id}')" class="p-2 rounded-xl text-onyx-700 hover:text-rose-700 hover:bg-rose-50 transition" title="Eliminar">
                   <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
               </div>
             </div>
+
           </div>
         `;
       }).join('');
@@ -560,11 +659,11 @@
 
     function getCategoryBadge(cat = '') {
       switch (cat.toUpperCase()) {
-        case 'TRABAJO': return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
-        case 'VIP': return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
-        case 'FAMILIA': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
-        case 'AMIGOS': return 'bg-purple-500/10 text-purple-400 border-purple-500/20';
-        default: return 'bg-slate-700/30 text-slate-400 border-slate-700/40';
+        case 'VIP': return 'bg-gold-100 text-gold-800 border-gold-400 font-extrabold';
+        case 'TRABAJO': return 'bg-wine-50 text-wine-900 border-wine-300';
+        case 'FAMILIA': return 'bg-emerald-50 text-emerald-800 border-emerald-300';
+        case 'AMIGOS': return 'bg-purple-50 text-purple-800 border-purple-300';
+        default: return 'bg-onyx-800/5 text-onyx-800 border-gold-300';
       }
     }
 
@@ -575,7 +674,7 @@
       document.getElementById('statCompanies').textContent = companies.size;
     }
 
-    // MODAL CONTROL
+    // CONTROL DEL MODAL
     function openModal(id = null) {
       document.getElementById('contactForm').reset();
       document.getElementById('contactId').value = '';
@@ -585,18 +684,18 @@
       if (id) {
         const c = contacts.find(item => item.id === id);
         if (c) {
-          title.innerHTML = `<i data-lucide="edit" class="w-5 h-5 text-brand-400"></i> Editar Contacto`;
+          title.textContent = 'Editar Contacto Privilegiado';
           document.getElementById('contactId').value = c.id;
           document.getElementById('inputName').value = c.nombre || '';
           document.getElementById('inputPhone').value = c.telefono || '';
           document.getElementById('inputEmail').value = c.email || '';
           document.getElementById('inputCompany').value = c.empresa || '';
-          document.getElementById('inputCategory').value = c.categoria || 'Personal';
+          document.getElementById('inputCategory').value = c.categoria || 'VIP';
           document.getElementById('inputNotes').value = c.notas || '';
           document.getElementById('inputFavorite').checked = !!c.favorito;
         }
       } else {
-        title.innerHTML = `<i data-lucide="user-plus" class="w-5 h-5 text-brand-400"></i> Nuevo Contacto`;
+        title.textContent = 'Registrar Contacto';
       }
 
       modal.classList.remove('hidden');
@@ -621,7 +720,7 @@
       localStorage.setItem('AWS_CONTACTS_API_URL', apiUrl);
       updateBackendStatusBadge();
       closeConfigModal();
-      showToast(apiUrl ? 'Conectado a AWS correctamente' : 'Cambiado a modo demo local', 'success');
+      showToast(apiUrl ? 'Enlazado a la nube exitosamente' : 'Cambiado a catálogo local', 'success');
       loadContacts();
     }
 
@@ -631,24 +730,24 @@
       document.getElementById('apiUrlInput').value = '';
       updateBackendStatusBadge();
       closeConfigModal();
-      showToast('Regresando a datos locales en memoria', 'info');
+      showToast('Restaurando catálogo local', 'info');
       loadContacts();
     }
 
-    // TOASTS
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
       const toast = document.createElement('div');
       
-      const colors = {
-        success: 'border-emerald-500/40 bg-slate-900/95 text-emerald-300',
-        error: 'border-rose-500/40 bg-slate-900/95 text-rose-300',
-        info: 'border-indigo-500/40 bg-slate-900/95 text-indigo-300'
+      const styles = {
+        success: 'border-emerald-600 bg-white text-emerald-950 shadow-emerald-900/10',
+        error: 'border-rose-600 bg-white text-rose-950 shadow-rose-900/10',
+        info: 'border-gold-500 bg-white text-onyx-950 shadow-gold-900/10'
       };
 
-      toast.className = `glass flex items-center gap-2.5 px-4 py-3 rounded-xl border text-xs font-semibold shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 ${colors[type] || colors.info}`;
-      toast.innerHTML = `<span>${message}</span>`;
+      toast.className = `flex items-center gap-3 px-5 py-3.5 rounded-2xl border-2 text-xs font-serif font-bold tracking-wide shadow-2xl transition-all duration-300 transform translate-y-4 opacity-0 ${styles[type] || styles.info}`;
+      toast.innerHTML = `<i data-lucide="bell" class="w-4 h-4 text-wine-800"></i><span>${message}</span>`;
       container.appendChild(toast);
+      lucide.createIcons();
 
       setTimeout(() => {
         toast.classList.remove('translate-y-4', 'opacity-0');
