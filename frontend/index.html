@@ -651,20 +651,14 @@
                   <i data-lucide="star" class="w-4 h-4 ${c.favorito ? 'fill-gold-400 text-gold-400' : ''}"></i>
                 </button>
               </div>
-
-              <!-- Texto Kicker inferior sobre la imagen (Idéntico a la referencia) -->
-              <div class="absolute bottom-4 left-5 right-5 z-10">
-                <span class="text-[10px] font-bold tracking-[0.22em] text-gold-300 uppercase truncate block drop-shadow-md">
-                  ${c.empresa || 'CLIENTE DISTINGUIDO'}
-                </span>
-              </div>
             </div>
 
-            <!-- CONTENEDOR INFERIOR CURVADO (Superpuesto idéntico al card de referencia) -->
+            <!-- CONTENEDOR INFERIOR CURVADO (Superpuesto limpio sin colisiones) -->
             <div class="p-6 flex-1 flex flex-col justify-between bg-ivory-100 rounded-t-[28px] -mt-5 relative z-10 border-t border-gold-300/80 shadow-md">
               <div>
-                <span class="text-[10px] font-extrabold tracking-widest uppercase text-wine-900 block mb-1">
-                  CONTACTO VERIFICADO
+                <!-- Empresa / Cargo (100% visible, nítido y sin cortes) -->
+                <span class="text-[10px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block mb-1.5 truncate" title="${c.empresa || 'CLIENTE DISTINGUIDO'}">
+                  ${c.empresa || 'CLIENTE DISTINGUIDO'}
                 </span>
 
                 <h4 class="font-serif font-bold text-onyx-950 text-2xl tracking-tight leading-tight group-hover:text-wine-800 transition">
