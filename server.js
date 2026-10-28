@@ -85,6 +85,17 @@ app.get('/api/contacts', (req, res) => {
   res.json({ total: contacts.length, contacts });
 });
 
+// 2.1 Obtener contacto por ID
+app.get('/api/contacts/:id', (req, res) => {
+  const { id } = req.params;
+  const contacts = getContacts();
+  const contact = contacts.find(c => c.id === id);
+  if (!contact) {
+    return res.status(404).json({ error: 'Contacto no encontrado' });
+  }
+  res.json(contact);
+});
+
 // 3. Crear contacto
 app.post('/api/contacts', (req, res) => {
   const { nombre, telefono, email, empresa, categoria, notas, favorito } = req.body;
