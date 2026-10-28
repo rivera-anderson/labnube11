@@ -106,8 +106,8 @@
 
 <body class="text-onyx-900 min-h-screen selection:bg-wine-800 selection:text-gold-200">
 
-  <!-- Main Container -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+  <!-- VISTA 1: DIRECTORIO DE CONTACTOS (Catálogo Principal) -->
+  <main id="directoryView" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 transition-opacity duration-300">
 
     <!-- Header Section (Luxury Editorial Style) -->
     <header class="border-b border-gold-300/60 pb-8">
@@ -216,7 +216,7 @@
       <p class="text-sm text-onyx-800/70 mt-1 max-w-sm mx-auto">Prueba ajustando los filtros o registra un nuevo contacto exclusivo.</p>
     </div>
 
-  </div>
+  </main>
 
   <!-- MODAL: Crear / Editar Contacto (High Luxury Edition) -->
   <div id="contactModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-onyx-950/75 backdrop-blur-sm p-4">
@@ -325,150 +325,230 @@
     </div>
   </div>
 
-  <!-- MODAL: Página / Vista de Detalle de Contacto (Gossu Luxury Profile) -->
-  <div id="detailModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-onyx-950/80 backdrop-blur-md p-4 sm:p-6 overflow-y-auto" onclick="if(event.target === this) closeDetailModal()">
-    <div id="detailCard" class="bg-white w-full max-w-2xl rounded-[36px] border-2 border-gold-400 overflow-hidden shadow-2xl relative transition-all duration-300 transform scale-95 opacity-0 my-auto">
+  <!-- VISTA 2: PÁGINA COMPLETA - DETALLE DE CONTACTO EXCLUSIVO (Pantalla Entera) -->
+  <main id="contactDetailView" class="hidden min-h-screen py-8 transition-opacity duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <!-- Top Hero Cover -->
-      <div class="relative w-full h-72 sm:h-80 bg-onyx-950 overflow-hidden">
-        <img id="detailHeroImg" src="" alt="Cover" class="w-full h-full object-cover">
-        <div id="detailHeroPlaceholder" class="w-full h-full wine-gradient flex flex-col items-center justify-center p-6 text-center relative hidden">
-          <div id="detailHeroInitials" class="w-24 h-24 rounded-3xl border-2 border-gold-400 flex items-center justify-center text-gold-200 font-serif font-bold text-4xl shadow-2xl backdrop-blur-sm bg-black/20">
-          </div>
-          <span class="text-xs tracking-[0.3em] text-gold-300 uppercase font-sans mt-4">Perfil Confidencial</span>
-        </div>
+      <!-- Barra Superior de Navegación y Acciones -->
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <button onclick="navigateBackToDirectory()" class="flex items-center gap-2.5 px-5 py-2.5 rounded-2xl bg-white border border-gold-300 hover:border-gold-500 shadow-md text-xs font-bold font-serif tracking-wider uppercase text-wine-900 hover:bg-gold-50 transition active:scale-95">
+          <i data-lucide="arrow-left" class="w-4 h-4 text-wine-800"></i>
+          <span>Volver al Directorio</span>
+        </button>
 
-        <!-- Dark Gradient Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/50"></div>
-
-        <!-- Top Navigation Bar -->
-        <div class="absolute top-5 left-5 right-5 flex items-center justify-between z-20">
-          <button onclick="closeDetailModal()" class="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-black/60 hover:bg-black/85 text-gold-200 border border-gold-400/50 text-xs font-bold tracking-wider transition shadow-lg">
-            <i data-lucide="arrow-left" class="w-4 h-4 text-gold-400"></i>
-            <span>Volver al Directorio</span>
+        <div class="flex items-center gap-2.5">
+          <button id="fullDetailFavBtn" onclick="toggleDetailFavorite()" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-gold-300 text-gold-600 hover:border-gold-500 shadow-md text-xs font-bold transition">
+            <i data-lucide="star" id="fullDetailFavIcon" class="w-4 h-4"></i>
+            <span id="fullDetailFavLabel" class="hidden sm:inline">Favorito</span>
+          </button>
+          
+          <button id="fullDetailEditBtn" onclick="editFromDetail()" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl wine-gradient text-gold-100 border border-gold-400 shadow-md text-xs font-bold font-serif tracking-wider uppercase hover:brightness-110 transition">
+            <i data-lucide="edit-3" class="w-4 h-4 text-gold-300"></i>
+            <span>Editar</span>
           </button>
 
-          <div class="flex items-center gap-2">
-            <button id="detailFavBtn" onclick="toggleDetailFavorite()" class="p-2.5 rounded-full backdrop-blur-md bg-black/60 hover:bg-gold-500/30 text-gold-400 border border-gold-400/50 transition shadow-lg" title="Favorito VIP">
-              <i data-lucide="star" id="detailFavIcon" class="w-4 h-4"></i>
-            </button>
-            <button id="detailEditBtn" onclick="editFromDetail()" class="p-2.5 rounded-full backdrop-blur-md bg-black/60 hover:bg-black/90 text-white border border-gold-400/50 transition shadow-lg" title="Editar">
-              <i data-lucide="edit-3" class="w-4 h-4"></i>
-            </button>
-          </div>
-        </div>
-
-        <!-- Title & Badges in Hero -->
-        <div class="absolute bottom-6 left-6 right-6 z-20">
-          <div class="flex items-center gap-2 mb-2">
-            <span id="detailCategoryBadge" class="px-3.5 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase backdrop-blur-md bg-black/60 text-gold-200 border border-gold-400/60 shadow">
-              VIP
-            </span>
-            <span class="text-[11px] font-bold tracking-widest text-gold-300 uppercase drop-shadow" id="detailCompanyHeader">
-              TECSUP CLOUD COMPUTING
-            </span>
-          </div>
-
-          <h2 id="detailName" class="text-3xl sm:text-4xl font-bold font-serif text-white tracking-tight drop-shadow-md">
-            Ing. Jaime Farfán
-          </h2>
+          <button id="fullDetailDeleteBtn" onclick="deleteFromDetail()" class="p-2.5 rounded-2xl bg-white border border-rose-200 text-rose-700 hover:bg-rose-50 shadow-md transition" title="Eliminar Contacto">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
         </div>
       </div>
 
-      <!-- Detail Body Container -->
-      <div class="p-6 sm:p-8 bg-ivory-100 rounded-t-[32px] -mt-6 relative z-10 border-t border-gold-300 shadow-xl space-y-5">
+      <!-- Tarjeta / Banner Principal del Perfil -->
+      <div class="rounded-[36px] overflow-hidden border-2 border-gold-400/90 shadow-2xl bg-white mb-8">
         
-        <!-- Action Hub: Quick Communication Buttons -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <a id="detailCallAction" href="#" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
-            <div class="w-10 h-10 rounded-xl wine-gradient flex items-center justify-center text-gold-200 mb-2 shadow group-hover:scale-110 transition-transform">
-              <i data-lucide="phone-call" class="w-5 h-5"></i>
+        <!-- Portada Hero en Alta Resolución -->
+        <div class="relative w-full h-80 sm:h-96 bg-onyx-950 overflow-hidden">
+          <img id="fullHeroImg" src="" alt="Cover" class="w-full h-full object-cover">
+          <div id="fullHeroPlaceholder" class="w-full h-full wine-gradient flex flex-col items-center justify-center p-8 text-center relative hidden">
+            <div id="fullHeroInitials" class="w-28 h-28 rounded-3xl border-2 border-gold-400 flex items-center justify-center text-gold-200 font-serif font-bold text-5xl shadow-2xl backdrop-blur-sm bg-black/20">
             </div>
-            <span class="text-xs font-bold text-onyx-950">Llamar</span>
-            <span class="text-[10px] text-onyx-800/60">Marcar voz</span>
-          </a>
-
-          <a id="detailMailAction" href="#" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
-            <div class="w-10 h-10 rounded-xl bg-gold-500 flex items-center justify-center text-white mb-2 shadow group-hover:scale-110 transition-transform">
-              <i data-lucide="mail" class="w-5 h-5"></i>
-            </div>
-            <span class="text-xs font-bold text-onyx-950">Mensaje</span>
-            <span class="text-[10px] text-onyx-800/60">Enviar email</span>
-          </a>
-
-          <a id="detailWhatsappAction" target="_blank" href="#" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
-            <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white mb-2 shadow group-hover:scale-110 transition-transform">
-              <i data-lucide="message-circle" class="w-5 h-5"></i>
-            </div>
-            <span class="text-xs font-bold text-onyx-950">WhatsApp</span>
-            <span class="text-[10px] text-onyx-800/60">Chat directo</span>
-          </a>
-
-          <button onclick="copyContactCard()" class="flex flex-col items-center justify-center p-3.5 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
-            <div class="w-10 h-10 rounded-xl bg-onyx-900 flex items-center justify-center text-gold-300 mb-2 shadow group-hover:scale-110 transition-transform">
-              <i data-lucide="share-2" class="w-5 h-5"></i>
-            </div>
-            <span class="text-xs font-bold text-onyx-950">Compartir</span>
-            <span class="text-[10px] text-onyx-800/60">Copiar ficha</span>
-          </button>
-        </div>
-
-        <!-- Section: Información de Contacto -->
-        <div class="bg-white p-5 rounded-2xl border border-gold-200 shadow-sm space-y-3">
-          <span class="text-[10px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block mb-1">
-            CANALES DE COMUNICACIÓN
-          </span>
-
-          <div class="flex items-center justify-between py-2 border-b border-gold-100 text-sm">
-            <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2">
-              <i data-lucide="phone" class="w-4 h-4 text-wine-800"></i> Teléfono Móvil
-            </span>
-            <span id="detailPhoneText" class="font-bold text-onyx-950 tracking-wide font-sans">+51 987 654 321</span>
+            <span class="text-xs tracking-[0.3em] text-gold-300 uppercase font-sans mt-4">Perfil Confidencial Privé</span>
           </div>
 
-          <div class="flex items-center justify-between py-2 border-b border-gold-100 text-sm">
-            <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2">
-              <i data-lucide="mail" class="w-4 h-4 text-gold-600"></i> Correo Electrónico
-            </span>
-            <span id="detailEmailText" class="font-bold text-onyx-950 font-sans truncate max-w-xs">jfarfan@tecsup.edu.pe</span>
-          </div>
+          <!-- Viñeta Gradiente Cinematográfica -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/30"></div>
 
-          <div class="flex items-center justify-between py-2 text-sm">
-            <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2">
-              <i data-lucide="building" class="w-4 h-4 text-onyx-700"></i> Organización / Empresa
-            </span>
-            <span id="detailCompanyText" class="font-bold text-onyx-950 font-sans">Cátedra de Arquitectura Cloud</span>
+          <!-- Información en la base de la Portada (Sin cortes de texto) -->
+          <div class="absolute bottom-6 sm:bottom-8 left-6 sm:left-10 right-6 sm:right-10 z-10">
+            <div class="flex flex-wrap items-center gap-2.5 mb-2.5">
+              <span id="fullCategoryBadge" class="px-4 py-1.5 rounded-full text-[11px] font-extrabold tracking-widest uppercase backdrop-blur-md bg-black/60 text-gold-200 border border-gold-400/60 shadow">
+                VIP
+              </span>
+              <span class="text-xs font-bold tracking-[0.2em] text-gold-300 uppercase drop-shadow break-words" id="fullCompanyHeader">
+                TECSUP CLOUD COMPUTING
+              </span>
+            </div>
+
+            <h1 id="fullName" class="text-3xl sm:text-5xl font-bold font-serif text-white tracking-tight drop-shadow-lg break-words leading-tight">
+              Ing. Jaime Farfán
+            </h1>
           </div>
         </div>
 
-        <!-- Section: Anotaciones Confidenciales -->
-        <div class="bg-white p-5 rounded-2xl border border-gold-200 shadow-sm">
-          <span class="text-[10px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block mb-2">
-            ANOTACIONES & OBSERVACIONES
-          </span>
-          <p id="detailNotesText" class="text-xs text-onyx-800 leading-relaxed font-sans bg-ivory-50 p-3.5 rounded-xl border border-gold-100 italic">
-            "Diseño e implementación de entornos virtualizados de alta disponibilidad en AWS EC2."
-          </p>
-        </div>
+        <!-- Cuerpo del Perfil en 2 Columnas -->
+        <div class="p-6 sm:p-10 bg-ivory-100 rounded-t-[36px] -mt-8 relative z-10 border-t border-gold-300/80 shadow-inner">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Columna Izquierda: Hub de Acción y Ficha (2 columnas de ancho) -->
+            <div class="lg:col-span-2 space-y-6">
+              
+              <!-- Hub de Comunicación Rápida -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+                <a id="fullCallAction" href="#" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+                  <div class="w-12 h-12 rounded-xl wine-gradient flex items-center justify-center text-gold-200 mb-2 shadow group-hover:scale-110 transition-transform">
+                    <i data-lucide="phone-call" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs font-bold text-onyx-950">Llamada</span>
+                  <span class="text-[10px] text-onyx-800/60 mt-0.5">Marcar directo</span>
+                </a>
 
-        <!-- Section: Telemetría Cloud & Auditoría -->
-        <div class="bg-ivory-200/60 p-4 rounded-2xl border border-gold-200/80 flex flex-wrap items-center justify-between gap-3 text-[11px] text-onyx-800/70">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Servidor: <strong class="text-onyx-950">AWS EC2 (Debian 12)</strong></span>
-          </div>
-          <div>
-            <span>ID Registro: <code id="detailRecordId" class="text-[10px] bg-white px-2 py-0.5 rounded border border-gold-300 font-mono text-wine-900">#1</code></span>
-          </div>
-          <div>
-            <span>Sincronización: <strong class="text-emerald-700">Persistente</strong></span>
+                <a id="fullMailAction" href="#" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+                  <div class="w-12 h-12 rounded-xl bg-gold-500 flex items-center justify-center text-white mb-2 shadow group-hover:scale-110 transition-transform">
+                    <i data-lucide="mail" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs font-bold text-onyx-950">Email</span>
+                  <span class="text-[10px] text-onyx-800/60 mt-0.5">Enviar correo</span>
+                </a>
+
+                <a id="fullWhatsappAction" target="_blank" href="#" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+                  <div class="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white mb-2 shadow group-hover:scale-110 transition-transform">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs font-bold text-onyx-950">WhatsApp</span>
+                  <span class="text-[10px] text-onyx-800/60 mt-0.5">Chat directo</span>
+                </a>
+
+                <button onclick="copyContactCard()" class="flex flex-col items-center justify-center p-4 rounded-2xl bg-white border border-gold-200 hover:border-gold-500 shadow-sm hover:shadow-md transition group text-center">
+                  <div class="w-12 h-12 rounded-xl bg-onyx-950 flex items-center justify-center text-gold-300 mb-2 shadow group-hover:scale-110 transition-transform">
+                    <i data-lucide="share-2" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs font-bold text-onyx-950">Compartir</span>
+                  <span class="text-[10px] text-onyx-800/60 mt-0.5">Copiar ficha</span>
+                </button>
+              </div>
+
+              <!-- Canales de Comunicación (Sin recortes ni truncamiento) -->
+              <div class="bg-white p-6 sm:p-7 rounded-3xl border border-gold-200 shadow-sm space-y-4">
+                <span class="text-[11px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block pb-2 border-b border-gold-100">
+                  CANALES DE COMUNICACIÓN DIRECTA
+                </span>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border-b border-gold-100">
+                  <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-wine-50 text-wine-800 flex items-center justify-center">
+                      <i data-lucide="phone" class="w-4 h-4"></i>
+                    </div>
+                    Teléfono Móvil Principal
+                  </span>
+                  <a id="fullPhoneLink" href="#" class="font-bold text-base text-onyx-950 tracking-wide font-sans hover:text-wine-800 hover:underline transition break-all">
+                    +51 987 654 321
+                  </a>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3 border-b border-gold-100">
+                  <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-gold-50 text-gold-700 flex items-center justify-center">
+                      <i data-lucide="mail" class="w-4 h-4"></i>
+                    </div>
+                    Correo Electrónico Corporativo
+                  </span>
+                  <a id="fullEmailLink" href="#" class="font-bold text-sm text-onyx-950 font-sans hover:text-wine-800 hover:underline transition break-all">
+                    jfarfan@tecsup.edu.pe
+                  </a>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 py-3">
+                  <span class="text-xs font-medium text-onyx-800/60 flex items-center gap-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-onyx-100 text-onyx-800 flex items-center justify-center">
+                      <i data-lucide="building" class="w-4 h-4"></i>
+                    </div>
+                    Organización o Empresa
+                  </span>
+                  <span id="fullCompanyText" class="font-bold text-sm text-onyx-950 font-sans break-words text-left sm:text-right sm:max-w-md">
+                    Cátedra de Arquitectura Cloud & Virtualización
+                  </span>
+                </div>
+              </div>
+
+              <!-- Bitácora & Anotaciones Confidenciales (Texto Completo) -->
+              <div class="bg-white p-6 sm:p-7 rounded-3xl border border-gold-200 shadow-sm">
+                <span class="text-[11px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block mb-3">
+                  BITÁCORA & ANOTACIONES CONFIDENCIALES
+                </span>
+                <div class="bg-ivory-50 p-5 rounded-2xl border border-gold-200/60">
+                  <p id="fullNotesText" class="text-sm text-onyx-900 leading-relaxed font-sans italic break-words whitespace-pre-wrap">
+                    "Diseño e implementación de entornos virtualizados de alta disponibilidad en AWS EC2."
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Columna Derecha: Telemetría Cloud & Resumen -->
+            <div class="space-y-6">
+              
+              <!-- Tarjeta de Arquitectura Cloud -->
+              <div class="bg-white p-6 rounded-3xl border-2 border-gold-300 shadow-md">
+                <div class="flex items-center gap-3 pb-4 border-b border-gold-200">
+                  <div class="w-10 h-10 rounded-xl wine-gradient flex items-center justify-center text-gold-300 shadow">
+                    <i data-lucide="server" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold font-serif text-onyx-950">Telemetría AWS EC2</h3>
+                    <p class="text-[10px] tracking-wider uppercase text-gold-700 font-semibold">Infraestructura Virtualizada</p>
+                  </div>
+                </div>
+
+                <div class="space-y-3.5 py-4 text-xs text-onyx-800">
+                  <div class="flex items-center justify-between">
+                    <span class="text-onyx-800/60">Sistema Operativo</span>
+                    <strong class="text-onyx-950">Debian 12 (Linux HVM)</strong>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-onyx-800/60">Estado de Servidor</span>
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                      EN LÍNEA
+                    </span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-onyx-800/60">ID Registro</span>
+                    <code id="fullRecordId" class="text-[11px] font-mono bg-ivory-200 px-2.5 py-1 rounded-lg text-wine-900 font-bold">#1</code>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-onyx-800/60">Persistencia</span>
+                    <strong class="text-emerald-700">RESTful CRUD DB</strong>
+                  </div>
+                </div>
+
+                <div class="pt-3 border-t border-gold-200">
+                  <button onclick="copyContactCard()" class="w-full py-2.5 rounded-xl bg-ivory-200 hover:bg-gold-100 text-onyx-950 text-xs font-bold font-serif tracking-wider uppercase border border-gold-300 transition flex items-center justify-center gap-2">
+                    <i data-lucide="copy" class="w-3.5 h-3.5 text-wine-800"></i>
+                    <span>Copiar Ficha Completa</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Tip de Laboratorio -->
+              <div class="wine-gradient p-6 rounded-3xl border border-gold-400 text-gold-100 shadow-xl">
+                <div class="flex items-center gap-2 text-gold-300 mb-2">
+                  <i data-lucide="shield-check" class="w-5 h-5"></i>
+                  <span class="text-xs font-bold tracking-widest uppercase">Laboratorio 11 Cloud</span>
+                </div>
+                <p class="text-xs leading-relaxed opacity-90">
+                  Entorno aprovisionado en AWS EC2 con Debian 12. Administración mediante SSH y gestión de ciclo de vida con Node.js y PM2.
+                </p>
+              </div>
+
+            </div>
+
           </div>
         </div>
 
       </div>
 
     </div>
-  </div>
+  </main>
 
   <!-- MODAL: Configuración AWS Cloud -->
   <div id="configModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-onyx-950/70 backdrop-blur-sm p-4">
@@ -609,6 +689,12 @@
       }
       renderContacts();
       updateStats();
+
+      // Si la URL ya tenía un hash de contacto, navegar directo a la página de detalle
+      if (window.location.hash.startsWith('#contact-')) {
+        const id = window.location.hash.replace('#contact-', '');
+        navigateToDetail(id);
+      }
     }
 
     function loadFromLocal() {
@@ -720,6 +806,12 @@
       }
       renderContacts();
       updateStats();
+
+      // Si la URL ya tenía un hash de contacto, navegar directo a la página de detalle
+      if (window.location.hash.startsWith('#contact-')) {
+        const id = window.location.hash.replace('#contact-', '');
+        navigateToDetail(id);
+      }
     }
 
     // FILTRADO
@@ -768,7 +860,7 @@
         const badgeStyle = getCategoryBadge(c.categoria);
 
         return `
-          <div onclick="openDetailModal('${c.id}')" class="card-luxury rounded-[32px] overflow-hidden border border-gold-300/80 hover:border-gold-500 bg-white shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col group cursor-pointer">
+          <div onclick="navigateToDetail('${c.id}')" class="card-luxury rounded-[32px] overflow-hidden border border-gold-300/80 hover:border-gold-500 bg-white shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col group cursor-pointer">
             
             <!-- PORTADA HERO SUPERIOR (Formato Rectangular Completo estilo Bento / Referencia) -->
             <div class="relative w-full h-64 overflow-hidden bg-onyx-950 flex-shrink-0">
@@ -798,20 +890,20 @@
               </div>
             </div>
 
-            <!-- CONTENEDOR INFERIOR CURVADO (Superpuesto limpio sin colisiones) -->
+            <!-- CONTENEDOR INFERIOR CURVADO (Superpuesto limpio sin colisiones y sin texto cortado) -->
             <div class="p-6 flex-1 flex flex-col justify-between bg-ivory-100 rounded-t-[28px] -mt-5 relative z-10 border-t border-gold-300/80 shadow-md">
               <div>
-                <!-- Empresa / Cargo (100% visible, nítido y sin cortes) -->
-                <span class="text-[10px] font-extrabold tracking-[0.2em] uppercase text-wine-900 block mb-1.5 truncate" title="${c.empresa || 'CLIENTE DISTINGUIDO'}">
+                <!-- Empresa / Cargo (Limpio, con salto natural sin cortes con ...) -->
+                <span class="text-[10px] font-extrabold tracking-[0.18em] uppercase text-wine-900 block mb-1.5 leading-snug break-words">
                   ${c.empresa || 'CLIENTE DISTINGUIDO'}
                 </span>
 
-                <h4 class="font-serif font-bold text-onyx-950 text-2xl tracking-tight leading-tight group-hover:text-wine-800 transition">
+                <h4 class="font-serif font-bold text-onyx-950 text-2xl tracking-tight leading-tight group-hover:text-wine-800 transition break-words">
                   ${c.nombre}
                 </h4>
 
                 ${c.notas ? `
-                  <p class="text-xs text-onyx-800/80 leading-relaxed mt-2.5 line-clamp-2">
+                  <p class="text-xs text-onyx-800/80 leading-relaxed mt-2.5 break-words line-clamp-2">
                     ${c.notas}
                   </p>
                 ` : `
@@ -834,7 +926,7 @@
                     <div class="w-7 h-7 rounded-lg bg-gold-50 flex items-center justify-center text-gold-700 border border-gold-200 flex-shrink-0 group-hover/item:bg-gold-500 group-hover/item:text-white transition">
                       <i data-lucide="mail" class="w-3.5 h-3.5"></i>
                     </div>
-                    <span class="truncate">${c.email}</span>
+                    <span class="break-all">${c.email}</span>
                   </a>` : ''}
                 </div>
               </div>
@@ -1017,18 +1109,18 @@
       loadContacts();
     }
 
-    // PÁGINA / MODAL DE DETALLE EXCLUSIVO (VISTA COMPLETA GOSSU)
+    // ENRUTAMIENTO SPA: PÁGINA COMPLETA DE DETALLE EXCLUSIVO
     let currentDetailId = null;
 
-    function openDetailModal(id) {
+    function navigateToDetail(id) {
       const c = contacts.find(item => item.id === id);
       if (!c) return;
       currentDetailId = id;
 
-      const modal = document.getElementById('detailModal');
-      const card = document.getElementById('detailCard');
-      const heroImg = document.getElementById('detailHeroImg');
-      const heroPlaceholder = document.getElementById('detailHeroPlaceholder');
+      const directoryView = document.getElementById('directoryView');
+      const detailView = document.getElementById('contactDetailView');
+      const heroImg = document.getElementById('fullHeroImg');
+      const heroPlaceholder = document.getElementById('fullHeroPlaceholder');
       const initials = c.nombre.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
 
       if (c.avatar_url) {
@@ -1038,77 +1130,97 @@
       } else {
         heroImg.classList.add('hidden');
         heroPlaceholder.classList.remove('hidden');
-        document.getElementById('detailHeroInitials').textContent = initials;
+        document.getElementById('fullHeroInitials').textContent = initials;
       }
 
-      document.getElementById('detailCategoryBadge').textContent = c.categoria || 'VIP';
-      document.getElementById('detailCategoryBadge').className = `px-3.5 py-1 rounded-full text-[10px] font-extrabold tracking-widest uppercase backdrop-blur-md border shadow ${getCategoryBadge(c.categoria)}`;
-      document.getElementById('detailCompanyHeader').textContent = (c.empresa || 'CLIENTE DISTINGUIDO').toUpperCase();
-      document.getElementById('detailName').textContent = c.nombre;
+      document.getElementById('fullCategoryBadge').textContent = c.categoria || 'VIP';
+      document.getElementById('fullCategoryBadge').className = `px-4 py-1.5 rounded-full text-[11px] font-extrabold tracking-widest uppercase backdrop-blur-md border shadow ${getCategoryBadge(c.categoria)}`;
+      document.getElementById('fullCompanyHeader').textContent = (c.empresa || 'CLIENTE DISTINGUIDO').toUpperCase();
+      document.getElementById('fullName').textContent = c.nombre;
 
-      // Acciones rápidas
-      document.getElementById('detailCallAction').href = `tel:${c.telefono}`;
-      document.getElementById('detailMailAction').href = c.email ? `mailto:${c.email}` : '#';
+      // Acciones de comunicación
+      document.getElementById('fullCallAction').href = `tel:${c.telefono}`;
+      document.getElementById('fullMailAction').href = c.email ? `mailto:${c.email}` : '#';
       const cleanPhone = c.telefono.replace(/[^0-9]/g, '');
-      document.getElementById('detailWhatsappAction').href = cleanPhone ? `https://wa.me/${cleanPhone}` : '#';
+      document.getElementById('fullWhatsappAction').href = cleanPhone ? `https://wa.me/${cleanPhone}` : '#';
 
-      // Detalles textuales
-      document.getElementById('detailPhoneText').textContent = c.telefono;
-      document.getElementById('detailEmailText').textContent = c.email || 'No especificado';
-      document.getElementById('detailCompanyText').textContent = c.empresa || 'Sin empresa registrada';
-      document.getElementById('detailNotesText').textContent = c.notas ? `"${c.notas}"` : 'Sin anotaciones adicionales registradas.';
-      document.getElementById('detailRecordId').textContent = `#${c.id}`;
+      // Enlaces y datos textuales (Sin truncar)
+      document.getElementById('fullPhoneLink').textContent = c.telefono;
+      document.getElementById('fullPhoneLink').href = `tel:${c.telefono}`;
+      document.getElementById('fullEmailLink').textContent = c.email || 'No registrado';
+      document.getElementById('fullEmailLink').href = c.email ? `mailto:${c.email}` : '#';
+      document.getElementById('fullCompanyText').textContent = c.empresa || 'Sin empresa registrada';
+      document.getElementById('fullNotesText').textContent = c.notas ? `"${c.notas}"` : 'Sin anotaciones adicionales registradas.';
+      document.getElementById('fullRecordId').textContent = `#${c.id}`;
 
       // Estado de estrella VIP
-      const favIcon = document.getElementById('detailFavIcon');
-      if (c.favorito) {
-        favIcon.className = 'w-4 h-4 fill-gold-400 text-gold-400';
-      } else {
-        favIcon.className = 'w-4 h-4 text-gold-400';
-      }
+      updateFullDetailFavState(c.favorito);
 
-      modal.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
-      lucide.createIcons();
-
-      // Transición fluida con resorte elegante
+      // Transición suave entre páginas
+      directoryView.classList.add('opacity-0');
       setTimeout(() => {
-        card.classList.remove('scale-95', 'opacity-0');
-        card.classList.add('scale-100', 'opacity-100');
-      }, 10);
+        directoryView.classList.add('hidden');
+        detailView.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+          detailView.classList.remove('opacity-0');
+          lucide.createIcons();
+        }, 50);
+      }, 150);
+
+      window.location.hash = 'contact-' + id;
     }
 
-    function closeDetailModal() {
-      const modal = document.getElementById('detailModal');
-      const card = document.getElementById('detailCard');
+    function navigateBackToDirectory() {
+      const directoryView = document.getElementById('directoryView');
+      const detailView = document.getElementById('contactDetailView');
 
-      card.classList.remove('scale-100', 'opacity-100');
-      card.classList.add('scale-95', 'opacity-0');
-
+      detailView.classList.add('opacity-0');
       setTimeout(() => {
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-      }, 250);
+        detailView.classList.add('hidden');
+        directoryView.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => {
+          directoryView.classList.remove('opacity-0');
+          lucide.createIcons();
+        }, 50);
+      }, 150);
+
+      window.location.hash = '';
+      currentDetailId = null;
+    }
+
+    function updateFullDetailFavState(isFav) {
+      const favIcon = document.getElementById('fullDetailFavIcon');
+      const favLabel = document.getElementById('fullDetailFavLabel');
+      if (isFav) {
+        favIcon.className = 'w-4 h-4 fill-gold-500 text-gold-500';
+        favLabel.textContent = 'VIP Activo';
+      } else {
+        favIcon.className = 'w-4 h-4 text-gold-600';
+        favLabel.textContent = 'Favorito';
+      }
     }
 
     function toggleDetailFavorite() {
       if (!currentDetailId) return;
       toggleFavorite(currentDetailId);
       const c = contacts.find(item => item.id === currentDetailId);
-      const favIcon = document.getElementById('detailFavIcon');
-      if (c && c.favorito) {
-        favIcon.className = 'w-4 h-4 fill-gold-400 text-gold-400';
-      } else {
-        favIcon.className = 'w-4 h-4 text-gold-400';
+      if (c) {
+        updateFullDetailFavState(c.favorito);
       }
     }
 
     function editFromDetail() {
       const id = currentDetailId;
-      closeDetailModal();
-      setTimeout(() => {
-        openModal(id);
-      }, 260);
+      openModal(id);
+    }
+
+    function deleteFromDetail() {
+      if (!currentDetailId) return;
+      const id = currentDetailId;
+      navigateBackToDirectory();
+      deleteContact(id);
     }
 
     function copyContactCard() {
@@ -1118,6 +1230,19 @@
       navigator.clipboard.writeText(text);
       showToast('Ficha de contacto copiada al portapapeles 📋', 'success');
     }
+
+    // Soporte para botón atrás del navegador
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#contact-')) {
+        const id = hash.replace('#contact-', '');
+        if (id !== currentDetailId) {
+          navigateToDetail(id);
+        }
+      } else if (currentDetailId) {
+        navigateBackToDirectory();
+      }
+    });
 
     function showToast(message, type = 'info') {
       const container = document.getElementById('toastContainer');
